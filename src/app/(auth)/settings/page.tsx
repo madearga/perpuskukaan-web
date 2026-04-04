@@ -1,0 +1,101 @@
+"use client";
+
+import { authClient } from "@/lib/auth-client";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { AlertTriangle, ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+export default function SettingsPage() {
+  const router = useRouter();
+
+  const handleDeleteAccount = async () => {
+    if (
+      window.confirm(
+        "Are you sure you want to delete your account? This action cannot be undone."
+      )
+    ) {
+      try {
+        await authClient.deleteUser();
+        router.push("/");
+      } catch {
+        alert("Failed to delete account. Please try again.");
+      }
+    }
+  };
+
+  return (
+    <div className="min-h-screen w-full flex items-center justify-center p-4">
+      <div className="w-full max-w-md space-y-4">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="flex items-center gap-2"
+          asChild
+        >
+          <Link href="/">
+            <ArrowLeft size={16} />
+            Back to Dashboard
+          </Link>
+        </Button>
+        <Card className="w-full">
+          <CardHeader>
+            <CardTitle className="text-lg md:text-xl">Settings</CardTitle>
+            <CardDescription className="text-xs md:text-sm">
+              Manage your account and review the active Google sign-in policy
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-6">
+            <div className="grid gap-2">
+              <h3 className="text-sm font-medium">Authentication</h3>
+              <p className="text-sm text-muted-foreground">
+                This project only accepts Google sign-in. Password, magic link,
+                OTP, anonymous, and 2FA flows have been removed.
+              </p>
+            </div>
+
+            <div className="grid gap-4">
+              <div>
+                <h3 className="text-sm font-medium mb-1 flex items-center gap-2">
+                  Delete Account
+                  <AlertTriangle size={14} className="text-destructive" />
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  Permanently delete your account and all associated data. This
+                  action cannot be undone.
+                </p>
+              </div>
+              <div>
+                <Button variant="destructive" onClick={handleDeleteAccount}>
+                  Delete Account
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+          <CardFooter>
+            <div className="flex justify-center w-full border-t py-4">
+              <p className="text-center text-xs text-neutral-500">
+                Powered by{" "}
+                <Link
+                  href="https://better-auth.com"
+                  className="underline"
+                  target="_blank"
+                >
+                  <span className="dark:text-orange-200/90">better-auth</span>
+                </Link>
+              </p>
+            </div>
+          </CardFooter>
+        </Card>
+      </div>
+    </div>
+  );
+}
