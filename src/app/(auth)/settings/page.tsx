@@ -12,10 +12,12 @@ import {
 } from "@/components/ui/card";
 import { AlertTriangle, ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+
+// TODO: re-enable after auth config
+// import { useRouter } from "next/navigation";
 
 export default function SettingsPage() {
-  const router = useRouter();
+  // const router = useRouter(); // TODO: re-enable after auth config
 
   const handleDeleteAccount = async () => {
     // Auth disabled — account deletion skipped
@@ -30,7 +32,7 @@ export default function SettingsPage() {
     //   } catch {
     //     alert("Failed to delete account. Please try again.");
     //   }
-    // };
+    // }
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-4">
