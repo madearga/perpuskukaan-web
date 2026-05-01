@@ -1,10 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  cacheComponents: true,
+  cacheComponents: false,
   reactCompiler: false,
   turbopack: {
     root: process.cwd(),
+  },
+  env: {
+    BUILD_TIMESTAMP: Date.now().toString(),
   },
   experimental: {
     optimizePackageImports: [
