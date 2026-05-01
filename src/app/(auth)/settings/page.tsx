@@ -1,6 +1,6 @@
 "use client";
 
-import { authClient } from "@/lib/auth-client";
+// import { authClient } from "@/lib/auth-client"; // TODO: re-enable after auth config
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -18,19 +18,19 @@ export default function SettingsPage() {
   const router = useRouter();
 
   const handleDeleteAccount = async () => {
-    if (
-      window.confirm(
-        "Are you sure you want to delete your account? This action cannot be undone."
-      )
-    ) {
-      try {
-        await authClient.deleteUser();
-        router.push("/");
-      } catch {
-        alert("Failed to delete account. Please try again.");
-      }
-    }
-  };
+    // Auth disabled — account deletion skipped
+    // if (
+    //   window.confirm(
+    //     "Are you sure you want to delete your account? This action cannot be undone."
+    //   )
+    // ) {
+    //   try {
+    //     await authClient.deleteUser();
+    //     router.push("/");
+    //   } catch {
+    //     alert("Failed to delete account. Please try again.");
+    //   }
+    // };
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-4">
