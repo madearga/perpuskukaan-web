@@ -47,13 +47,14 @@ export const list = query({
     status: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    let query = ctx.db.query("books").withIndex("by_status", (q) =>
-      args.status ? q.eq("status", args.status) : q.eq("status", "available")
-    );
-
+    let query;
     if (args.category) {
       query = ctx.db.query("books").withIndex("by_category", (q) =>
-        q.eq("category", args.category)
+        q.eq("category", args.category as string)
+      );
+    } else {
+      query = ctx.db.query("books").withIndex("by_status", (q) =>
+        args.status ? q.eq("status", args.status) : q.eq("status", "available")
       );
     }
 

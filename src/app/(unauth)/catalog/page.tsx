@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "convex/react";
-import { api } from "@/convex/_generated/api";
+import { api } from "@convex/convex/_generated/api";
 import { useState } from "react";
 import Link from "next/link";
 import { BookOpen, Search } from "lucide-react";
@@ -115,7 +115,7 @@ export default function CatalogPage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {displayBooks.map((book) => (
+          {displayBooks.map((book: any) => (
             <Link
               key={book._id}
               href={`/catalog/${book._id}`}

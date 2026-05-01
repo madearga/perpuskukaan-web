@@ -1,14 +1,14 @@
 "use client";
 
 import { useQuery } from "convex/react";
-import { api } from "@/convex/_generated/api";
+import { api } from "@convex/convex/_generated/api";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { BookOpen, ArrowLeft, User, Calendar } from "lucide-react";
 
 export default function BookDetailPage() {
   const params = useParams();
-  const bookId = params.id as string;
+  const bookId = params.id as unknown as import("@convex/convex/_generated/dataModel").Id<"books">;
 
   const book = useQuery(api.books.getById, { bookId });
 

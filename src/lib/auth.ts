@@ -72,8 +72,13 @@ const createOptions = (ctx: GenericCtx) =>
                 email: user.email,
               });
             } else if ("db" in ctx) {
+              const now = Date.now();
               await (ctx as MutationCtx).db.insert("users", {
                 email: user.email,
+                role: "user",
+                linkedUserIds: [],
+                createdAt: now,
+                updatedAt: now,
               });
             }
           },
@@ -92,13 +97,6 @@ const createOptions = (ctx: GenericCtx) =>
                 .first();
 
               if (appUser) {
-                const todos = await mutationCtx.db
-                  .query("todos")
-                  .withIndex("userId", (q) => q.eq("userId", appUser._id))
-                  .collect();
-                await asyncMap(todos, async (todo) => {
-                  await mutationCtx.db.delete(todo._id);
-                });
                 await mutationCtx.db.delete(appUser._id);
               }
             }
