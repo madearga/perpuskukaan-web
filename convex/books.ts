@@ -60,15 +60,16 @@ export const list = query({
 
     const page = await query.paginate(args.paginationOpts);
 
-    // Enrich with owner info
+    // Enrich with owner info (skip merged users)
     const enriched = await Promise.all(
       page.page.map(async (book) => {
         const owner = await ctx.db.get(book.ownerId);
+        if (owner && owner.isActive === false) return null;
         return { ...book, owner };
       })
     );
 
-    return { ...page, page: enriched };
+    return { ...page, page: enriched.filter((b) => b !== null) };
   },
 });
 
@@ -115,6 +116,7 @@ export const search = query({
       if (!seen.has(book._id)) {
         seen.add(book._id);
         const owner = await ctx.db.get(book.ownerId);
+        if (owner && owner.isActive === false) continue;
         merged.push({ ...book, owner });
       }
     }
@@ -130,6 +132,7 @@ export const getById = query({
     if (!book) return null;
 
     const owner = await ctx.db.get(book.ownerId);
+    if (owner && owner.isActive === false) return null;
     return { ...book, owner };
   },
 });

@@ -22,11 +22,12 @@ export const getActive = query({
         const book = await ctx.db.get(t.bookId);
         const borrower = await ctx.db.get(t.borrowerId);
         const lender = await ctx.db.get(t.lenderId);
+        if ((borrower && borrower.isActive === false) || (lender && lender.isActive === false)) return null;
         return { ...t, book, borrower, lender };
       })
     );
 
-    return enriched;
+    return enriched.filter((t) => t !== null);
   },
 });
 
@@ -46,11 +47,12 @@ export const getOverdue = query({
         const book = await ctx.db.get(t.bookId);
         const borrower = await ctx.db.get(t.borrowerId);
         const lender = await ctx.db.get(t.lenderId);
+        if ((borrower && borrower.isActive === false) || (lender && lender.isActive === false)) return null;
         return { ...t, book, borrower, lender };
       })
     );
 
-    return enriched;
+    return enriched.filter((t) => t !== null);
   },
 });
 
@@ -75,11 +77,12 @@ export const getAll = query({
         const book = await ctx.db.get(t.bookId);
         const borrower = await ctx.db.get(t.borrowerId);
         const lender = await ctx.db.get(t.lenderId);
+        if ((borrower && borrower.isActive === false) || (lender && lender.isActive === false)) return null;
         return { ...t, book, borrower, lender };
       })
     );
 
-    return enriched;
+    return enriched.filter((t) => t !== null);
   },
 });
 

@@ -49,11 +49,12 @@ export const getByBorrower = query({
       requests.map(async (req) => {
         const book = await ctx.db.get(req.bookId);
         const lender = await ctx.db.get(req.lenderId);
+        if (lender && lender.isActive === false) return null;
         return { ...req, book, lender };
       })
     );
 
-    return enriched;
+    return enriched.filter((r) => r !== null);
   },
 });
 
@@ -70,11 +71,12 @@ export const getByLender = query({
       requests.map(async (req) => {
         const book = await ctx.db.get(req.bookId);
         const borrower = await ctx.db.get(req.borrowerId);
+        if (borrower && borrower.isActive === false) return null;
         return { ...req, book, borrower };
       })
     );
 
-    return enriched;
+    return enriched.filter((r) => r !== null);
   },
 });
 

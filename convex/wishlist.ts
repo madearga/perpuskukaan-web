@@ -12,11 +12,15 @@ export const getByUser = query({
     const enriched = await Promise.all(
       items.map(async (item) => {
         const book = await ctx.db.get(item.bookId);
+        if (book) {
+          const owner = await ctx.db.get(book.ownerId);
+          if (owner && owner.isActive === false) return null;
+        }
         return { ...item, book };
       })
     );
 
-    return enriched;
+    return enriched.filter((i) => i !== null);
   },
 });
 
