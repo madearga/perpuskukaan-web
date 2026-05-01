@@ -33,6 +33,7 @@ export default function SettingsPage() {
     //     alert("Failed to delete account. Please try again.");
     //   }
     // }
+  };
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-4">
