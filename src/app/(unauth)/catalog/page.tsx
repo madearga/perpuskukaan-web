@@ -2,11 +2,11 @@
 
 import { useQuery } from "convex/react";
 import { api } from "@convex/convex/_generated/api";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Link from "next/link";
 import { BookOpen, Search } from "lucide-react";
 
-export default function CatalogPage() {
+function CatalogContent() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
@@ -150,5 +150,19 @@ export default function CatalogPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function CatalogPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="animate-pulse text-muted-foreground">Loading...</div>
+        </div>
+      }
+    >
+      <CatalogContent />
+    </Suspense>
   );
 }

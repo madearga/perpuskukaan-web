@@ -4,9 +4,10 @@ import { useQuery } from "convex/react";
 import { api } from "@convex/convex/_generated/api";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import { Suspense } from "react";
 import { BookOpen, ArrowLeft, User, Calendar } from "lucide-react";
 
-export default function BookDetailPage() {
+function BookDetail() {
   const params = useParams();
   const bookId = params.id as unknown as import("@convex/convex/_generated/dataModel").Id<"books">;
 
@@ -53,15 +54,21 @@ export default function BookDetailPage() {
           </div>
 
           <div className="flex flex-wrap gap-2">
-            <span className="rounded-full bg-muted px-3 py-1 text-sm">
-              {book.category}
-            </span>
-            <span className="rounded-full bg-muted px-3 py-1 text-sm">
-              {book.language}
-            </span>
-            <span className="rounded-full bg-muted px-3 py-1 text-sm">
-              {book.fictionType}
-            </span>
+            {book.category && (
+              <span className="rounded-full bg-muted px-3 py-1 text-sm">
+                {book.category}
+              </span>
+            )}
+            {book.language && (
+              <span className="rounded-full bg-muted px-3 py-1 text-sm">
+                {book.language}
+              </span>
+            )}
+            {book.fictionType && (
+              <span className="rounded-full bg-muted px-3 py-1 text-sm">
+                {book.fictionType}
+              </span>
+            )}
             <span
               className={`rounded-full px-3 py-1 text-sm ${
                 book.status === "available"
@@ -101,5 +108,19 @@ export default function BookDetailPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function BookDetailPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="animate-pulse text-muted-foreground">Loading...</div>
+        </div>
+      }
+    >
+      <BookDetail />
+    </Suspense>
   );
 }
