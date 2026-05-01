@@ -1,11 +1,9 @@
 "use client";
 
-export const dynamic = "force-dynamic";
-
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@convex/convex/_generated/api";
 import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+// import { useSearchParams } from "next/navigation"; // Replaced with manual parsing to avoid SSR issues
 import { User, BookOpen, Bookmark, Star, MapPin, Phone, Mail, Calendar, Link2, Unlink, AlertCircle, CheckCircle } from "lucide-react";
 
 export default function ProfilePage() {
@@ -24,11 +22,12 @@ export default function ProfilePage() {
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [linking, setLinking] = useState(false);
 
-  const searchParams = useSearchParams();
-
-  // Handle cookie-based Telegram link flow
+  // Handle cookie-based Telegram link flow (manual URL parsing, no useSearchParams)
   useEffect(() => {
-    const step = searchParams.get("step");
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+
+    const step = params.get("step");
     if (step === "link" && user?._id) {
       const cookie = document.cookie
         .split(";")
@@ -40,7 +39,7 @@ export default function ProfilePage() {
     }
 
     // Handle error/success query params
-    const error = searchParams.get("error");
+    const error = params.get("error");
     if (error) {
       const errorMap: Record<string, string> = {
         expired: "Sesi kadaluarsa. Silakan coba lagi.",
@@ -52,11 +51,11 @@ export default function ProfilePage() {
       setMessage({ type: "error", text: errorMap[error] || "Terjadi kesalahan." });
     }
 
-    const linked = searchParams.get("linked");
+    const linked = params.get("linked");
     if (linked === "telegram") {
       setMessage({ type: "success", text: "Telegram berhasil terhubung!" });
     }
-  }, [searchParams, user?._id]);
+  }, [user?._id]);
 
   const handleTelegramLink = async (token: string) => {
     try {
