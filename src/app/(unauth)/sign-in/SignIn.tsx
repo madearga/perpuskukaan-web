@@ -1,6 +1,6 @@
 "use client";
 
-// import { authClient } from "@/lib/auth-client"; // TODO: re-enable after auth config
+import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
