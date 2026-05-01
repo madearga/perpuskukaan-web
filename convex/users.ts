@@ -1,6 +1,5 @@
-import { internalMutation } from "./_generated/server";
+import { internalMutation, mutation, query } from "./_generated/server";
 import { v } from "convex/values";
-import { Id } from "./_generated/dataModel";
 
 export const syncUserCreation = internalMutation({
   args: { email: v.string() },
@@ -40,5 +39,64 @@ export const syncUserDeletion = internalMutation({
     if (appUser) {
       await ctx.db.delete(appUser._id);
     }
+  },
+});
+
+export const getProfile = query({
+  args: { userId: v.id("users") },
+  handler: async (ctx, args) => {
+    const user = await ctx.db.get(args.userId);
+    if (!user) return null;
+
+    const myBooks = await ctx.db
+      .query("books")
+      .withIndex("by_owner", (q) => q.eq("ownerId", args.userId))
+      .collect();
+
+    const myBorrows = await ctx.db
+      .query("transactions")
+      .withIndex("by_borrower", (q) => q.eq("borrowerId", args.userId))
+      .collect();
+
+    const myLends = await ctx.db
+      .query("transactions")
+      .withIndex("by_lender", (q) => q.eq("lenderId", args.userId))
+      .collect();
+
+    return {
+      ...user,
+      stats: {
+        totalBooks: myBooks.length,
+        totalBorrows: myBorrows.length,
+        totalLends: myLends.length,
+      },
+    };
+  },
+});
+
+export const getAll = query({
+  args: {},
+  handler: async (ctx) => {
+    return await ctx.db.query("users").collect();
+  },
+});
+
+export const updateProfile = mutation({
+  args: {
+    userId: v.id("users"),
+    bio: v.optional(v.string()),
+    phone: v.optional(v.string()),
+    location: v.optional(v.string()),
+    avatar: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const update: Record<string, unknown> = { updatedAt: Date.now() };
+    if (args.bio !== undefined) update.bio = args.bio;
+    if (args.phone !== undefined) update.phone = args.phone;
+    if (args.location !== undefined) update.location = args.location;
+    if (args.avatar !== undefined) update.avatar = args.avatar;
+
+    await ctx.db.patch(args.userId, update);
+    return { success: true };
   },
 });

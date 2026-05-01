@@ -10,6 +10,7 @@
 
 import type * as auth from "../auth.js";
 import type * as books from "../books.js";
+import type * as borrowRequests from "../borrowRequests.js";
 import type * as email from "../email.js";
 import type * as emails_components_BaseEmail from "../emails/components/BaseEmail.js";
 import type * as emails_magicLink from "../emails/magicLink.js";
@@ -17,8 +18,10 @@ import type * as emails_resetPassword from "../emails/resetPassword.js";
 import type * as emails_verifyEmail from "../emails/verifyEmail.js";
 import type * as emails_verifyOTP from "../emails/verifyOTP.js";
 import type * as http from "../http.js";
+import type * as transactions from "../transactions.js";
 import type * as users from "../users.js";
 import type * as util from "../util.js";
+import type * as wishlist from "../wishlist.js";
 
 import type {
   ApiFromModules,
@@ -29,6 +32,7 @@ import type {
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   books: typeof books;
+  borrowRequests: typeof borrowRequests;
   email: typeof email;
   "emails/components/BaseEmail": typeof emails_components_BaseEmail;
   "emails/magicLink": typeof emails_magicLink;
@@ -36,8 +40,10 @@ declare const fullApi: ApiFromModules<{
   "emails/verifyEmail": typeof emails_verifyEmail;
   "emails/verifyOTP": typeof emails_verifyOTP;
   http: typeof http;
+  transactions: typeof transactions;
   users: typeof users;
   util: typeof util;
+  wishlist: typeof wishlist;
 }>;
 
 /**
