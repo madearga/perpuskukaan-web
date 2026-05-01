@@ -1,150 +1,60 @@
-"use cache";
+"use client";
 
-import { Suspense } from "react";
-import Link from "next/link";
-import { AppContainer } from "@/components/server";
-import { DashboardClient } from "./client";
+import { useConvexAuth } from "convex/react";
+import { redirect } from "next/navigation";
+import { useEffect } from "react";
 
-// Stat Card Component - Reusable card for displaying metrics (cached)
-const StatCard = ({
-  label,
-  value,
-  description,
-}: {
-  label: string;
-  value: string | number;
-  description?: string;
-}) => {
-  return (
-    <div className="border rounded-lg p-6">
-      <div className="text-sm text-muted-foreground mb-1">{label}</div>
-      <div className="text-2xl font-semibold mb-1">{value}</div>
-      {description && (
-        <div className="text-xs text-muted-foreground">{description}</div>
-      )}
-    </div>
-  );
-};
+export default function DashboardPage() {
+  const { isAuthenticated, isLoading } = useConvexAuth();
 
-// Quick Actions Component - Common actions users might take (cached)
-const QuickActions = () => {
-  const actions = [
-    {
-      label: "Documentation",
-      href: "/documentation",
-      description: "Learn how to use this template",
-    },
-    {
-      label: "API Reference",
-      href: "/api-reference",
-      description: "Explore available functions",
-    },
-  ];
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      redirect("/sign-in");
+    }
+  }, [isAuthenticated, isLoading]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="animate-pulse text-muted-foreground">Loading...</div>
+      </div>
+    );
+  }
 
   return (
-    <div className="border rounded-lg p-6">
-      <h2 className="text-lg font-medium mb-4">Quick Actions</h2>
-      <div className="space-y-3">
-        {actions.map((action) => (
-          <Link
-            key={action.label}
-            href={action.href}
-            className="block p-3 rounded-lg border hover:bg-muted/50 transition-colors"
-          >
-            <div className="font-medium text-sm">{action.label}</div>
-            <div className="text-xs text-muted-foreground mt-1">
-              {action.description}
-            </div>
-          </Link>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-// Recent Activity Component - Shows recent user activity placeholder (cached)
-const RecentActivity = () => {
-  const activities = [
-    { action: "Account created", time: "Just now" },
-    { action: "Logged in", time: "Just now" },
-  ];
-
-  return (
-    <div className="border rounded-lg p-6">
-      <h2 className="text-lg font-medium mb-4">Recent Activity</h2>
-      <div className="space-y-4">
-        {activities.map((activity, index) => (
-          <div
-            key={index}
-            className="flex items-center justify-between text-sm"
-          >
-            <span>{activity.action}</span>
-            <span className="text-muted-foreground text-xs">
-              {activity.time}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-// Cached static content
-const DashboardStaticContent = () => {
-  return (
-    <>
-      {/* Stats Grid - Replace with your own metrics */}
-      <div className="grid gap-4 md:grid-cols-3">
-        <StatCard label="Total Users" value="1" description="Active accounts" />
-        <StatCard label="Projects" value="0" description="Active projects" />
-        <StatCard
-          label="Status"
-          value="Active"
-          description="All systems operational"
-        />
-      </div>
-
-      {/* Two Column Layout */}
-      <div className="grid gap-6 lg:grid-cols-2">
-        <QuickActions />
-        <RecentActivity />
-      </div>
-
-      {/* Getting Started Section (Remove this after setup) */}
-      <div className="border rounded-lg p-6 bg-muted/30">
-        <h2 className="text-lg font-medium mb-3">Getting Started</h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          This is a boilerplate dashboard. Customize it by:
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+        <p className="text-muted-foreground">
+          Selamat datang di Perpuskukaan — P2P Library Dashboard
         </p>
-        <ul className="text-sm space-y-2 list-disc list-inside text-muted-foreground">
-          <li>Replacing StatCard values with your own Convex queries</li>
-          <li>Adding your own components and sections</li>
-          <li>Creating new pages in the /dashboard directory</li>
-          <li>Customizing the layout to fit your needs</li>
-        </ul>
-        <div className="mt-4 pt-4 border-t text-xs text-muted-foreground">
-          Edit this file:{" "}
-          <code className="bg-muted px-1.5 py-0.5 rounded">
-            src/app/(auth)/dashboard/page.tsx
-          </code>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div className="rounded-lg border p-6">
+          <div className="text-sm font-medium text-muted-foreground">Buku Anda</div>
+          <div className="mt-2 text-3xl font-bold">0</div>
+        </div>
+        <div className="rounded-lg border p-6">
+          <div className="text-sm font-medium text-muted-foreground">Sedang Dipinjam</div>
+          <div className="mt-2 text-3xl font-bold">0</div>
+        </div>
+        <div className="rounded-lg border p-6">
+          <div className="text-sm font-medium text-muted-foreground">Permintaan Masuk</div>
+          <div className="mt-2 text-3xl font-bold">0</div>
+        </div>
+        <div className="rounded-lg border p-6">
+          <div className="text-sm font-medium text-muted-foreground">Reputasi</div>
+          <div className="mt-2 text-3xl font-bold">0</div>
         </div>
       </div>
-    </>
-  );
-};
 
-// Main Page Export - Server Component with cached content
-export default async function DashboardPage() {
-  "use cache";
-  return (
-    <AppContainer>
-      <Suspense
-        fallback={<div className="animate-pulse h-16 bg-muted rounded-lg" />}
-      >
-        <DashboardClient>
-          <DashboardStaticContent />
-        </DashboardClient>
-      </Suspense>
-    </AppContainer>
+      <div className="rounded-lg border p-6">
+        <h2 className="text-lg font-semibold mb-2">Getting Started</h2>
+        <p className="text-sm text-muted-foreground">
+          Dashboard sedang dalam pengembangan. Fitur lengkap akan tersedia segera.
+        </p>
+      </div>
+    </div>
   );
 }

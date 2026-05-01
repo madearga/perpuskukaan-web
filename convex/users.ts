@@ -1,13 +1,30 @@
 import { internalMutation } from "./_generated/server";
 import { v } from "convex/values";
-import { asyncMap } from "convex-helpers";
 import { Id } from "./_generated/dataModel";
 
 export const syncUserCreation = internalMutation({
   args: { email: v.string() },
   handler: async (ctx, args) => {
+    const now = Date.now();
     await ctx.db.insert("users", {
       email: args.email,
+      telegramId: null,
+      username: null,
+      firstName: null,
+      lastName: null,
+      phone: null,
+      location: null,
+      bio: null,
+      avatar: null,
+      reputation: 0,
+      totalBooksShared: 0,
+      totalBorrows: 0,
+      totalLends: 0,
+      isVerified: false,
+      role: "user",
+      linkedUserIds: [],
+      createdAt: now,
+      updatedAt: now,
     });
   },
 });
@@ -21,13 +38,6 @@ export const syncUserDeletion = internalMutation({
       .first();
 
     if (appUser) {
-      const todos = await ctx.db
-        .query("todos")
-        .withIndex("userId", (q) => q.eq("userId", appUser._id))
-        .collect();
-      await asyncMap(todos, async (todo) => {
-        await ctx.db.delete(todo._id);
-      });
       await ctx.db.delete(appUser._id);
     }
   },

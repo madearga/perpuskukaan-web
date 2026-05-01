@@ -1,5 +1,6 @@
 {
-  "name": "convexbetterkuka",
+  "name": "perpuskukaan-web",
+  "description": "Perpuskukaan Web UI — P2P Library Catalog + Admin Dashboard",
   "version": "0.1.1",
   "private": true,
   "scripts": {
