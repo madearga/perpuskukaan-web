@@ -18,6 +18,7 @@ export default defineSchema({
     totalLends: v.optional(v.number()),
     isVerified: v.optional(v.boolean()),
     isAdmin: v.optional(v.boolean()),
+    isActive: v.optional(v.boolean()),
     role: v.optional(v.string()),
     linkedUserIds: v.optional(v.array(v.id("users"))),
     createdAt: v.number(),
@@ -100,7 +101,8 @@ export default defineSchema({
     createdAt: v.number(),
   })
     .index("by_book", ["bookId"])
-    .index("by_reviewee", ["revieweeId"]),
+    .index("by_reviewee", ["revieweeId"])
+    .index("by_reviewer", ["reviewerId"]),
 
   wishlist: defineTable({
     userId: v.id("users"),

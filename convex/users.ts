@@ -20,6 +20,7 @@ export const syncUserCreation = internalMutation({
       totalBorrows: 0,
       totalLends: 0,
       isVerified: false,
+      isActive: true,
       role: "user",
       linkedUserIds: [],
       createdAt: now,
@@ -27,6 +28,8 @@ export const syncUserCreation = internalMutation({
     });
   },
 });
+
+
 
 export const syncUserDeletion = internalMutation({
   args: { email: v.string() },
