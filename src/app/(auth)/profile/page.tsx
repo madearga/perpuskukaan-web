@@ -112,6 +112,23 @@ export default function ProfilePage() {
     }
   }, [message]);
 
+  // User not authenticated
+  if (user === null) {
+    return (
+      <div className="max-w-2xl mx-auto space-y-6 text-center py-20">
+        <h1 className="text-2xl font-bold">Profil</h1>
+        <p className="text-muted-foreground">Silakan login untuk melihat profil.</p>
+        <a
+          href="/sign-in"
+          className="inline-block rounded-md bg-primary text-primary-foreground px-6 py-2 text-sm font-medium"
+        >
+          Login
+        </a>
+      </div>
+    );
+  }
+
+  // Still loading
   if (!profile) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">

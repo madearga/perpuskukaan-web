@@ -4,7 +4,6 @@ import { ThemeProvider } from "@/components/next-theme/theme-provider";
 import { Footer } from "@/components/footer";
 
 import { ConvexClientProvider } from "./ConvexClientProvider";
-import { AuthProvider } from "@/components/auth-provider";
 
 export const metadata: Metadata = {
   title: "Convexbetterkuka",
@@ -28,12 +27,10 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <ConvexClientProvider>
-              <AuthProvider>
-                <main className=" px-2 md:px-4 grow flex flex-col">
-                  {children}
-                </main>
-                <Footer />
-              </AuthProvider>
+              <main className=" px-2 md:px-4 grow flex flex-col">
+                {children}
+              </main>
+              <Footer />
             </ConvexClientProvider>
             
           </ThemeProvider>
