@@ -6,6 +6,26 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: process.cwd(),
   },
+  experimental: {
+    optimizePackageImports: [
+      "lucide-react",
+      "better-auth",
+      "@convex-dev/better-auth",
+      "@radix-ui/react-alert-dialog",
+      "@radix-ui/react-avatar",
+      "@radix-ui/react-checkbox",
+      "@radix-ui/react-dialog",
+      "@radix-ui/react-dropdown-menu",
+      "@radix-ui/react-label",
+      "@radix-ui/react-slot",
+      "@react-email/components",
+      "sonner",
+      "vaul",
+      "class-variance-authority",
+      "convex",
+      "convex-helpers",
+    ],
+  },
   /* config options here */
   images: {
     dangerouslyAllowSVG: true, // This allows SVG usage
