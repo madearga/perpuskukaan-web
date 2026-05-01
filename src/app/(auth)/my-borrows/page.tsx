@@ -2,13 +2,13 @@
 
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@convex/convex/_generated/api";
-import { useConvexAuth } from "convex/react";
-import { useState, useEffect } from "react";
-import { redirect } from "next/navigation";
+// Auth bypassed — TODO: re-enable after auth config
+// import { useConvexAuth } from "convex/react";
+import { useState } from "react";
+// import { redirect } from "next/navigation";
 import { Clock, Check, X, BookOpen } from "lucide-react";
 
 export default function MyBorrowsPage() {
-  const { isAuthenticated, isLoading } = useConvexAuth();
   const user = useQuery(api.auth.getCurrentUser);
   const borrowerId = user?._id as any;
 
@@ -30,13 +30,9 @@ export default function MyBorrowsPage() {
 
   const [tab, setTab] = useState<"outgoing" | "active" | "incoming">("outgoing");
 
-  useEffect(() => {
-    if (!isLoading && !isAuthenticated) redirect("/sign-in");
-  }, [isAuthenticated, isLoading]);
+  // Auth bypassed
 
-  if (isLoading) {
-    return <div className="flex justify-center py-12"><div className="animate-pulse">Loading...</div></div>;
-  }
+  // Auth bypassed — no loading gate
 
   const tabs = [
     { key: "outgoing" as const, label: `Permintaan Saya (${outgoing?.length || 0})` },

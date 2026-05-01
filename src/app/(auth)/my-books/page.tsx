@@ -2,9 +2,10 @@
 
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@convex/convex/_generated/api";
-import { useConvexAuth } from "convex/react";
-import { useState, useEffect } from "react";
-import { redirect } from "next/navigation";
+// Auth bypassed — TODO: re-enable after auth config
+// import { useConvexAuth } from "convex/react";
+import { useState } from "react";
+// import { redirect } from "next/navigation";
 import { BookOpen, Plus, X } from "lucide-react";
 
 const CATEGORIES = ["Fiksi", "Non-Fiksi", "Filsafat", "Sejarah", "Sains", "Teknologi", "Agama", "Seni", "Lainnya"];
@@ -14,7 +15,6 @@ const FICTION_TYPES = ["fiksi", "non_fiksi"];
 const MODES = ["p2p", "library", "both"];
 
 export default function MyBooksPage() {
-  const { isAuthenticated, isLoading } = useConvexAuth();
   const user = useQuery(api.auth.getCurrentUser);
   const myBooks = useQuery(
     api.books.getMyBooks,
@@ -36,9 +36,7 @@ export default function MyBooksPage() {
     coverImage: "",
   });
 
-  useEffect(() => {
-    if (!isLoading && !isAuthenticated) redirect("/sign-in");
-  }, [isAuthenticated, isLoading]);
+  // Auth bypassed
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,9 +50,7 @@ export default function MyBooksPage() {
     });
   };
 
-  if (isLoading) {
-    return <div className="flex justify-center py-12"><div className="animate-pulse">Loading...</div></div>;
-  }
+  // Auth bypassed — no loading gate
 
   return (
     <div className="space-y-6">

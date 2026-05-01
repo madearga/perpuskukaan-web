@@ -2,13 +2,13 @@
 
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@convex/convex/_generated/api";
-import { useConvexAuth } from "convex/react";
+// Auth bypassed — TODO: re-enable after auth config
+// import { useConvexAuth } from "convex/react";
 import { useState, useEffect } from "react";
-import { redirect } from "next/navigation";
+// import { redirect } from "next/navigation";
 import { User, BookOpen, Bookmark, Star, MapPin, Phone, Mail, Calendar } from "lucide-react";
 
 export default function ProfilePage() {
-  const { isAuthenticated, isLoading } = useConvexAuth();
   const user = useQuery(api.auth.getCurrentUser);
   const profile = useQuery(
     api.users.getProfile,
@@ -19,9 +19,7 @@ export default function ProfilePage() {
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState({ bio: "", phone: "", location: "", avatar: "" });
 
-  useEffect(() => {
-    if (!isLoading && !isAuthenticated) redirect("/sign-in");
-  }, [isAuthenticated, isLoading]);
+  // Auth bypassed
 
   useEffect(() => {
     if (profile) {
@@ -34,7 +32,7 @@ export default function ProfilePage() {
     }
   }, [profile]);
 
-  if (isLoading || !profile) {
+  if (!profile) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="animate-pulse text-muted-foreground">Loading...</div>

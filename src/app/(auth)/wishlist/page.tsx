@@ -2,14 +2,15 @@
 
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@convex/convex/_generated/api";
-import { useConvexAuth } from "convex/react";
-import { useEffect } from "react";
-import { redirect } from "next/navigation";
+// Auth bypassed — TODO: re-enable after auth config
+// import { useConvexAuth } from "convex/react";
+// import { useEffect } from "react";
+// import { redirect } from "next/navigation";
 import { Heart, BookOpen } from "lucide-react";
 import Link from "next/link";
 
 export default function WishlistPage() {
-  const { isAuthenticated, isLoading } = useConvexAuth();
+  // const { isAuthenticated, isLoading } = useConvexAuth(); // TODO: re-enable after auth config
   const user = useQuery(api.auth.getCurrentUser);
   const wishlist = useQuery(
     api.wishlist.getByUser,
@@ -17,13 +18,13 @@ export default function WishlistPage() {
   );
   const removeFromWishlist = useMutation(api.wishlist.remove);
 
-  useEffect(() => {
-    if (!isLoading && !isAuthenticated) redirect("/sign-in");
-  }, [isAuthenticated, isLoading]);
+  // useEffect(() => { // TODO: re-enable after auth config
+  //   if (!isLoading && !isAuthenticated) redirect("/sign-in");
+  // }, [isAuthenticated, isLoading]);
 
-  if (isLoading) {
-    return <div className="flex justify-center py-12"><div className="animate-pulse">Loading...</div></div>;
-  }
+  // if (isLoading) {
+  //   return <div className="flex justify-center py-12"><div className="animate-pulse">Loading...</div></div>;
+  // }
 
   return (
     <div className="space-y-6">

@@ -12,10 +12,9 @@ import {
   Shield,
   LogOut,
 } from "lucide-react";
-import { useConvexAuth } from "convex/react";
 import { useQuery } from "convex/react";
 import { api } from "@convex/convex/_generated/api";
-import { authClient } from "@/lib/auth-client";
+// import { authClient } from "@/lib/auth-client"; // TODO: re-enable after auth config
 
 export default function AuthLayout({
   children,
@@ -66,6 +65,7 @@ export default function AuthLayout({
               </Link>
             );
           })}
+          {/* TODO: re-enable after auth config
           <button
             onClick={() => authClient.signOut()}
             className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
@@ -73,6 +73,7 @@ export default function AuthLayout({
             <LogOut className="h-4 w-4" />
             Keluar
           </button>
+          */}
         </nav>
       </aside>
       <main className="flex-1 p-4 md:p-6 overflow-auto">{children}</main>

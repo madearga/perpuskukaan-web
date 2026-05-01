@@ -2,14 +2,14 @@
 
 import { useQuery } from "convex/react";
 import { api } from "@convex/convex/_generated/api";
-import { useConvexAuth } from "convex/react";
-import { useEffect } from "react";
-import { redirect } from "next/navigation";
+// import { useConvexAuth } from "convex/react"; // TODO: re-enable after auth config
+// import { useEffect } from "react";
+// import { redirect } from "next/navigation";
 import Link from "next/link";
 import { BookOpen, Bookmark, Heart, Library, ArrowRight } from "lucide-react";
 
 export default function DashboardPage() {
-  const { isAuthenticated, isLoading } = useConvexAuth();
+  // Auth bypassed — no redirect, no loading gate
   const user = useQuery(api.auth.getCurrentUser);
 
   const myBooks = useQuery(
@@ -25,17 +25,17 @@ export default function DashboardPage() {
     user?._id ? { userId: user._id as any } : "skip"
   );
 
-  useEffect(() => {
-    if (!isLoading && !isAuthenticated) redirect("/sign-in");
-  }, [isAuthenticated, isLoading]);
+  // useEffect(() => {
+  //   if (!isLoading && !isAuthenticated) redirect("/sign-in");
+  // }, [isAuthenticated, isLoading]);
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="animate-pulse text-muted-foreground">Loading...</div>
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="flex items-center justify-center min-h-[60vh]">
+  //       <div className="animate-pulse text-muted-foreground">Loading...</div>
+  //     </div>
+  //   );
+  // }
 
   const quickLinks = [
     { href: "/catalog", label: "Jelajahi Katalog", icon: BookOpen, desc: "Cari buku untuk dipinjam" },
