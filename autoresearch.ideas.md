@@ -1,37 +1,22 @@
-# Autoresearch Ideas — Bundle Size Optimization
+# Autoresearch Ideas — Bundle Size Optimization (CONVERGED)
 
-## Results Summary
+## Final Result
 - **Baseline**: 1456 KB
 - **Best**: 1328 KB (-128 KB, -8.8%)
-- **Winning changes**: `experimental.optimizePackageImports` + `reactCompiler: false`
+- **Confidence**: 16.0× noise floor
+- **Experiments**: 20 (2 kept, 18 discarded)
+- **Status**: CONVERGED — no improvement in last 14 experiments
 
 ## Kept (committed)
-- ✅ `experimental.optimizePackageImports` for 16 packages — 120KB reduction
-- ✅ `reactCompiler: false` — 8KB reduction (compiler runtime overhead)
+- ✅ `experimental.optimizePackageImports` — 120KB
+- ✅ `reactCompiler: false` — 8KB
 
-## Discarded
-- ❌ `modularizeImports` lucide-react — no effect, already tree-shaken
-- ❌ remove react-qr-code unused dep — not in client bundle
-- ❌ stub auth-client — breaks ConvexBetterAuthProvider
-- ❌ `compress: true` — only HTTP compression
-- ❌ `swcMinify` — deprecated in Next.js 16
-- ❌ more optimizePackageImports (hookform, zod, etc) — no additional reduction
-- ❌ webpack splitChunks for better-auth — no total size benefit
-- ❌ `cacheComponents: false` — no effect
-- ❌ `@better-fetch/fetch` in optimizePackageImports — no effect
+## All Discarded
+modularizeImports, remove react-qr-code, stub auth-client, compress:true, swcMinify, more optimizePackageImports, webpack splitChunks, cacheComponents:false, @better-fetch/fetch, ppr:incremental, inlineCss, optimizeCss, remove turbopack config, output:standalone, lazy load authClient (-8KB worse), delete 13 unused UI components
 
-## Remaining Chunks (hard to reduce)
-| Chunk | Size | Content |
-|-------|------|---------|
-| 826 | 224KB | better-auth client |
-| 3054666c | 196KB | React + convex client |
-| framework | 188KB | Next.js framework core |
-| 34 | 184KB | Next.js router internals |
-| polyfills | 112KB | Standard JS polyfills |
-
-## Future Ideas (require architecture changes)
-- Lazy-load ConvexClientProvider via `next/dynamic` — defers 224+196KB but doesn't reduce total
-- Server-only auth — remove better-auth from client entirely (major refactor)
-- Replace convex client with lighter REST API calls (major refactor)
-- Consider Preact instead of React for smaller framework size
-- `output: 'standalone'` for deployment (server bundle, not client)
+## Why Converged
+1328 KB = 224KB better-auth + 196KB convex/react + 188KB Next.js framework + 184KB App Router + 112KB polyfills + 224KB remaining. All core deps. Only reducible via:
+- Removing better-auth from client (224KB)
+- Switching from React to Preact (~80KB savings)
+- Dropping App Router for Pages Router (~184KB)
+- Removing convex client (~76KB)
