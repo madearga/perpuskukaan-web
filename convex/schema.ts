@@ -3,7 +3,7 @@ import { v } from "convex/values";
 
 export default defineSchema({
   users: defineTable({
-    email: v.string(),
+    email: v.optional(v.string()),
     telegramId: v.optional(v.string()),
     username: v.optional(v.string()),
     firstName: v.optional(v.string()),
@@ -17,7 +17,8 @@ export default defineSchema({
     totalBorrows: v.optional(v.number()),
     totalLends: v.optional(v.number()),
     isVerified: v.optional(v.boolean()),
-    role: v.string(),
+    isAdmin: v.optional(v.boolean()),
+    role: v.optional(v.string()),
     linkedUserIds: v.optional(v.array(v.id("users"))),
     createdAt: v.number(),
     updatedAt: v.number(),
@@ -37,8 +38,8 @@ export default defineSchema({
     coverImage: v.optional(v.string()),
     status: v.string(),
     mode: v.string(),
-    language: v.string(),
-    fictionType: v.string(),
+    language: v.optional(v.string()),
+    fictionType: v.optional(v.string()),
     createdAt: v.number(),
     updatedAt: v.number(),
   })

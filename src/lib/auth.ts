@@ -11,10 +11,7 @@ import { internal } from "../../convex/_generated/api";
 type GenericCtx = QueryCtx | MutationCtx | ActionCtx;
 import { asyncMap } from "convex-helpers";
 
-const siteUrl = process.env.SITE_URL;
-if (!siteUrl) {
-  throw new Error("SITE_URL environment variable is required");
-}
+const siteUrl = process.env.SITE_URL || "http://localhost:3000";
 
 const googleEnabled = Boolean(
   process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
