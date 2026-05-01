@@ -8,10 +8,10 @@ import { User, BookOpen, Bookmark, Star, MapPin, Phone, Mail, Calendar, Link2, U
 
 export default function ProfilePage() {
   const user = useQuery(api.auth.getCurrentUser);
-  const profile = useQuery(
-    api.users.getProfile,
-    user?._id ? { userId: user._id as any } : "skip"
-  );
+  const profileQueryArgs = user?._id
+    ? { userId: user._id as any }
+    : ("skip" as any);
+  const profile = useQuery(api.users.getProfile, profileQueryArgs);
   const linkStatus = useQuery(api.users.getAccountLinkStatus);
   const updateProfile = useMutation(api.users.updateProfile);
   const connectTelegram = useMutation(api.users.connectTelegram);
