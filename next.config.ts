@@ -60,4 +60,31 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+// Custom webpack config to optimize chunk splitting
+import type { NextConfig } from "next";
+
+const origConfig = { ...nextConfig };
+
+export default {
+  ...origConfig,
+  webpack(config: any, { isServer }: { isServer: boolean }) {
+    if (!isServer) {
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+          ...config.optimization?.splitChunks,
+          cacheGroups: {
+            ...config.optimization?.splitChunks?.cacheGroups,
+            betterAuth: {
+              test: /[\\/]node_modules[\\/](better-auth|@better-fetch)[\\/]/,
+              name: 'better-auth',
+              priority: 20,
+              reuseExistingChunk: true,
+            },
+          },
+        },
+      };
+    }
+    return config;
+  },
+} satisfies NextConfig;
