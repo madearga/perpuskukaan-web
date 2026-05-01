@@ -113,7 +113,12 @@ export const updateProfile = mutation({
 export const getAccountLinkStatus = query({
   args: {},
   handler: async (ctx) => {
-    const authUser = await betterAuthComponent.getAuthUser(ctx);
+    let authUser;
+    try {
+      authUser = await betterAuthComponent.getAuthUser(ctx);
+    } catch {
+      return { hasTelegram: false, telegramUsername: null };
+    }
     if (!authUser) return { hasTelegram: false, telegramUsername: null };
 
     const appUser = await ctx.db
