@@ -6,7 +6,15 @@ import { createAuth } from "../src/lib/auth";
 
 const http = httpRouter();
 
-betterAuthComponent.registerRoutes(http, createAuth as any);
+// Register Better Auth routes with CORS enabled
+betterAuthComponent.registerRoutes(http, createAuth as any, {
+  cors: {
+    allowedOrigins: [
+      "https://perpuskukaan-web.vercel.app",
+      "http://localhost:3000",
+    ],
+  },
+});
 
 // Telegram Login Widget — GET handler renders confirmation page
 http.route({
