@@ -2,26 +2,36 @@
 
 ## Results Summary
 - **Baseline**: 1456 KB
-- **Best**: 1336 KB (-120 KB, -8.2%)
-- **Winning change**: `experimental.optimizePackageImports` in next.config.ts
+- **Best**: 1328 KB (-128 KB, -8.8%)
+- **Winning changes**: `experimental.optimizePackageImports` + `reactCompiler: false`
 
 ## Kept (committed)
-- ✅ `experimental.optimizePackageImports` for 16 packages — 120KB reduction (-8.2%)
+- ✅ `experimental.optimizePackageImports` for 16 packages — 120KB reduction
+- ✅ `reactCompiler: false` — 8KB reduction (compiler runtime overhead)
 
 ## Discarded
-- ❌ `modularizeImports` for lucide-react — no effect, already tree-shaken
+- ❌ `modularizeImports` lucide-react — no effect, already tree-shaken
 - ❌ remove react-qr-code unused dep — not in client bundle
-- ❌ stub auth-client — breaks ConvexBetterAuthProvider (8KB reduction but build fails)
-- ❌ `compress: true` — only HTTP compression, not file size
-- ❌ `swcMinify: true` — deprecated in Next.js 16 (already default)
+- ❌ stub auth-client — breaks ConvexBetterAuthProvider
+- ❌ `compress: true` — only HTTP compression
+- ❌ `swcMinify` — deprecated in Next.js 16
 - ❌ more optimizePackageImports (hookform, zod, etc) — no additional reduction
+- ❌ webpack splitChunks for better-auth — no total size benefit
+- ❌ `cacheComponents: false` — no effect
+- ❌ `@better-fetch/fetch` in optimizePackageImports — no effect
 
-## Future Ideas
-- Dynamic import `ConvexClientProvider` — would defer better-auth (224KB) to after initial paint
-- Lazy load dashboard/client.tsx with `next/dynamic`
-- Analyze if better-auth can be tree-shaken more (only import needed submodules)
-- Consider lighter auth alternative or server-only auth
-- Check if `convex` client (196KB chunk) can be loaded lazily
-- Enable `output: 'standalone'` for deployment optimization
-- Use webpack-bundle-analyzer to find more tree-shaking opportunities
-- Consider replacing `sonner` + `vaul` with native HTML alternatives
+## Remaining Chunks (hard to reduce)
+| Chunk | Size | Content |
+|-------|------|---------|
+| 826 | 224KB | better-auth client |
+| 3054666c | 196KB | React + convex client |
+| framework | 188KB | Next.js framework core |
+| 34 | 184KB | Next.js router internals |
+| polyfills | 112KB | Standard JS polyfills |
+
+## Future Ideas (require architecture changes)
+- Lazy-load ConvexClientProvider via `next/dynamic` — defers 224+196KB but doesn't reduce total
+- Server-only auth — remove better-auth from client entirely (major refactor)
+- Replace convex client with lighter REST API calls (major refactor)
+- Consider Preact instead of React for smaller framework size
+- `output: 'standalone'` for deployment (server bundle, not client)
