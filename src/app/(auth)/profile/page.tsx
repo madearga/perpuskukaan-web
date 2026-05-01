@@ -10,7 +10,7 @@ export default function ProfilePage() {
   const user = useQuery(api.auth.getCurrentUser);
   const profile = useQuery(
     api.users.getProfile,
-    user?._id ? { userId: user._id as any } : "skip"
+    user?._id ? { userId: user._id as any } : undefined
   );
   const linkStatus = useQuery(api.users.getAccountLinkStatus);
   const updateProfile = useMutation(api.users.updateProfile);
