@@ -16,6 +16,24 @@ betterAuthComponent.registerRoutes(http, createAuth as any, {
   },
 });
 
+// Debug endpoint — check env vars
+http.route({
+  path: "/api/debug/auth",
+  method: "GET",
+  handler: httpAction(async (ctx, request) => {
+    const debug = {
+      siteUrl: process.env.SITE_URL || "NOT_SET",
+      googleClientId: process.env.GOOGLE_CLIENT_ID ? "SET" : "NOT_SET",
+      googleClientSecret: process.env.GOOGLE_CLIENT_SECRET ? "SET" : "NOT_SET",
+      betterAuthSecret: process.env.BETTER_AUTH_SECRET ? "SET" : "NOT_SET",
+      nodeEnv: process.env.NODE_ENV || "NOT_SET",
+    };
+    return new Response(JSON.stringify(debug, null, 2), {
+      headers: { "Content-Type": "application/json" },
+    });
+  }),
+});
+
 // Telegram Login Widget — GET handler renders confirmation page
 http.route({
   path: "/api/link-telegram",
