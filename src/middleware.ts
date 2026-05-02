@@ -1,3 +1,4 @@
+import { getSessionCookie } from "better-auth/cookies";
 import { NextRequest, NextResponse } from "next/server";
 
 const signInRoutes = ["/sign-in"];
@@ -32,26 +33,19 @@ export default async function middleware(request: NextRequest) {
     rateLimit.set(ip, recent);
   }
 
-  // ====== AUTH BYPASS — original logic disabled ======
-  // TODO: re-enable after auth config
-  // const { getSessionCookie } = await import("better-auth/cookies");
-  // const sessionCookie = getSessionCookie(request);
-  // const isSignInRoute = signInRoutes.includes(request.nextUrl.pathname);
-  //
-  // if (isSignInRoute && !sessionCookie) {
-  //   return NextResponse.next();
-  // }
-  //
-  // if (!isSignInRoute && !sessionCookie) {
-  //   return NextResponse.redirect(new URL("/sign-in", request.url));
-  // }
-  //
-  // if (isSignInRoute || request.nextUrl.pathname === "/") {
-  //   return NextResponse.redirect(new URL("/dashboard", request.url));
-  // }
+  // ====== AUTH PROTECTION ======
+  const sessionCookie = getSessionCookie(request);
+  const isSignInRoute = signInRoutes.includes(request.nextUrl.pathname);
 
-  // Bypass: only redirect root to /dashboard, pass everything else through
-  if (request.nextUrl.pathname === "/") {
+  if (isSignInRoute && !sessionCookie) {
+    return NextResponse.next();
+  }
+
+  if (!isSignInRoute && !sessionCookie) {
+    return NextResponse.redirect(new URL("/sign-in", request.url));
+  }
+
+  if (isSignInRoute || request.nextUrl.pathname === "/") {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
@@ -59,5 +53,6 @@ export default async function middleware(request: NextRequest) {
 }
 
 export const config = {
+  // Run middleware on all routes except static assets and api routes
   matcher: ["/((?!.*\\..*|_next|api/auth).*)", "/", "/trpc(.*)"],
 };

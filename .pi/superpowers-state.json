@@ -29,12 +29,18 @@
   "tdd": {
     "phase": "idle",
     "testFiles": [],
-    "sourceFiles": [],
+    "sourceFiles": [
+      "src/lib/auth.ts",
+      "src/lib/auth-client.ts",
+      "src/app/ConvexClientProvider.tsx",
+      "src/middleware.ts",
+      "convex/http.ts"
+    ],
     "redVerificationPending": false
   },
   "debug": {
     "active": false,
-    "investigated": false,
+    "investigated": true,
     "fixAttempts": 0
   },
   "verification": {

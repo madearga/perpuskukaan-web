@@ -6,15 +6,7 @@ import { createAuth } from "../src/lib/auth";
 
 const http = httpRouter();
 
-// Register Better Auth routes with CORS enabled
-betterAuthComponent.registerRoutes(http, createAuth as any, {
-  cors: {
-    allowedOrigins: [
-      "https://perpuskukaan-web.vercel.app",
-      "http://localhost:3000",
-    ],
-  },
-});
+betterAuthComponent.registerRoutes(http, createAuth as any);
 
 // Debug endpoint — check env vars
 http.route({
