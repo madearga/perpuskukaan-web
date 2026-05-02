@@ -29,6 +29,10 @@ const createOptions = (ctx: GenericCtx) => {
       crossSubDomainCookies: {
         enabled: true,
       },
+      defaultCookieAttributes: {
+        sameSite: "none",
+        secure: true,
+      },
     },
     trustedOrigins: [
       "https://perpuskukaan-web.vercel.app",
