@@ -11,6 +11,8 @@
 import type * as auth from "../auth.js";
 import type * as books from "../books.js";
 import type * as borrowRequests from "../borrowRequests.js";
+import type * as borrowing from "../borrowing.js";
+import type * as botBooks from "../botBooks.js";
 import type * as email from "../email.js";
 import type * as emails_components_BaseEmail from "../emails/components/BaseEmail.js";
 import type * as emails_magicLink from "../emails/magicLink.js";
@@ -33,6 +35,8 @@ declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   books: typeof books;
   borrowRequests: typeof borrowRequests;
+  borrowing: typeof borrowing;
+  botBooks: typeof botBooks;
   email: typeof email;
   "emails/components/BaseEmail": typeof emails_components_BaseEmail;
   "emails/magicLink": typeof emails_magicLink;

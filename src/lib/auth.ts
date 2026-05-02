@@ -11,15 +11,15 @@ import { internal } from "../../convex/_generated/api";
 type GenericCtx = QueryCtx | MutationCtx | ActionCtx;
 import { asyncMap } from "convex-helpers";
 
-const siteUrl = process.env.SITE_URL || "http://localhost:3000";
-
-const googleEnabled = Boolean(
-  process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
-);
-
 // Split out options so they can be passed to the convex plugin
-const createOptions = (ctx: GenericCtx) =>
-  ({
+const createOptions = (ctx: GenericCtx) => {
+  const siteUrl = process.env.SITE_URL || "http://localhost:3000";
+  const googleEnabled = Boolean(
+    process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
+  );
+  console.log("[auth] googleEnabled:", googleEnabled, "CLIENT_ID:", !!process.env.GOOGLE_CLIENT_ID, "CLIENT_SECRET:", !!process.env.GOOGLE_CLIENT_SECRET, "SITE_URL:", siteUrl);
+
+  return {
     baseURL: siteUrl,
     database: betterAuthComponent.adapter(ctx as any),
     secret: process.env.BETTER_AUTH_SECRET,
@@ -101,7 +101,8 @@ const createOptions = (ctx: GenericCtx) =>
         },
       },
     },
-  } satisfies BetterAuthOptions);
+  } satisfies BetterAuthOptions;
+};
 
 export const createAuth = (ctx: GenericCtx) => {
   const options = createOptions(ctx);

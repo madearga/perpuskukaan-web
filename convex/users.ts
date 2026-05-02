@@ -331,3 +331,54 @@ export const disconnectTelegram = mutation({
     return { success: true };
   },
 });
+
+// ─── Bot-compatible functions (telegramId-based) ───
+
+export const getByTelegramId = query({
+  args: { telegramId: v.string() },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query("users")
+      .withIndex("by_telegram_id", (q) => q.eq("telegramId", args.telegramId))
+      .first();
+  },
+});
+
+export const register = mutation({
+  args: {
+    telegramId: v.string(),
+    username: v.optional(v.string()),
+    firstName: v.string(),
+    lastName: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const existing = await ctx.db
+      .query("users")
+      .withIndex("by_telegram_id", (q) => q.eq("telegramId", args.telegramId))
+      .first();
+
+    if (existing) {
+      return { success: false, message: "User already registered", userId: existing._id };
+    }
+
+    const now = Date.now();
+    const userId = await ctx.db.insert("users", {
+      telegramId: args.telegramId,
+      username: args.username,
+      firstName: args.firstName,
+      lastName: args.lastName,
+      reputation: 100,
+      totalBooksShared: 0,
+      totalBorrows: 0,
+      totalLends: 0,
+      isVerified: false,
+      isActive: true,
+      role: "user",
+      linkedUserIds: [],
+      createdAt: now,
+      updatedAt: now,
+    });
+
+    return { success: true, message: "Registration successful", userId };
+  },
+});
