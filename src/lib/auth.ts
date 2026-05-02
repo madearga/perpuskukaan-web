@@ -26,7 +26,14 @@ const createOptions = (ctx: GenericCtx) => {
     advanced: {
       disableCSRFCheck: true,
       useSecureCookies: process.env.NODE_ENV === "production",
+      crossSubDomainCookies: {
+        enabled: true,
+      },
     },
+    trustedOrigins: [
+      "https://perpuskukaan-web.vercel.app",
+      "http://localhost:3000",
+    ],
     account: {
       accountLinking: {
         enabled: true,
