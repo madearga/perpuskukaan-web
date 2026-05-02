@@ -20,7 +20,7 @@ export default function SignIn() {
     await authClient.signIn.social(
       {
         provider: "google",
-        callbackURL: "/dashboard",
+        callbackURL: "https://perpuskukaan-web.vercel.app/dashboard",
       },
       {
         onRequest: () => {
