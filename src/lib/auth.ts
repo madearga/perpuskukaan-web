@@ -24,7 +24,7 @@ const createOptions = (ctx: GenericCtx) => {
     database: betterAuthComponent.adapter(ctx as any),
     secret: process.env.BETTER_AUTH_SECRET,
     advanced: {
-      disableCSRFCheck: false,
+      disableCSRFCheck: true,
       useSecureCookies: process.env.NODE_ENV === "production",
     },
     account: {

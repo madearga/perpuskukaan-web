@@ -7,6 +7,9 @@ import type { authWithoutCtx } from "@/lib/auth";
 
 export const authClient = createAuthClient({
   baseURL: process.env.NEXT_PUBLIC_CONVEX_SITE_URL || "https://watchful-rook-105.convex.site",
+  fetchOptions: {
+    credentials: "include",
+  },
   plugins: [
     inferAdditionalFields<typeof authWithoutCtx>(),
     convexClient(),
