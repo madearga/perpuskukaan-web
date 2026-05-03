@@ -24,4 +24,4 @@
 ### Phase 5: Bot Integration (1 hour)
 - [ ] T14: Update OpenClaw bot `/addbook` flow — detect `message.photo`, download via Telegram `getFile` API, upload to Convex via `books.uploadCover` action
 - [ ] T15: Test bot photo flow — send photo + `/addbook` via Telegram, verify cover appears in web catalog
-- [ ] T16: Update OpenClaw to v2026.5.2 (after backup) — may improve file handling capabilities
+- [x] T16: Update OpenClaw to v2026.5.2 (after backup) — may improve file handling capabilities
