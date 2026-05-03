@@ -1,4 +1,4 @@
-import { convex, crossDomain } from "@convex-dev/better-auth/plugins";
+import { convex } from "@convex-dev/better-auth/plugins";
 import { betterAuth, BetterAuthOptions } from "better-auth";
 import { betterAuthComponent } from "../../convex/auth";
 import {
@@ -59,7 +59,7 @@ const createOptions = (ctx: GenericCtx) =>
         enabled: true,
       },
     },
-    plugins: [crossDomain({ siteUrl })],
+    plugins: [],
     databaseHooks: {
       user: {
         create: {

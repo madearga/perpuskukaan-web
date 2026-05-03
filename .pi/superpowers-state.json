@@ -32,9 +32,7 @@
     "sourceFiles": [
       "src/lib/auth.ts",
       "src/lib/auth-client.ts",
-      "src/app/ConvexClientProvider.tsx",
-      "src/middleware.ts",
-      "convex/http.ts"
+      "src/app/api/auth/[...all]/route.ts"
     ],
     "redVerificationPending": false
   },
