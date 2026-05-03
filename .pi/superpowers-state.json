@@ -30,9 +30,7 @@
     "phase": "idle",
     "testFiles": [],
     "sourceFiles": [
-      "src/lib/auth.ts",
-      "src/lib/auth-client.ts",
-      "src/app/api/auth/[...all]/route.ts"
+      "src/lib/auth-client.ts"
     ],
     "redVerificationPending": false
   },
