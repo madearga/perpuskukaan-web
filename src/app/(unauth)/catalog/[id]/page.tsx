@@ -7,6 +7,29 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { BookOpen, ArrowLeft, User, Calendar } from "lucide-react";
 
+function BookDetailCover({ book }: { book: any }) {
+  const coverUrl = useQuery(
+    api.books.getCoverUrl,
+    book.coverStorageId ? { storageId: book.coverStorageId } : "skip"
+  );
+  const src = coverUrl || book.coverImage;
+
+  if (!src) {
+    return (
+      <div className="aspect-[2/3] bg-muted rounded-lg flex items-center justify-center max-w-[400px]">
+        <BookOpen className="h-24 w-24 text-muted-foreground" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="aspect-[2/3] bg-muted rounded-lg overflow-hidden max-w-[400px]">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={src} alt={book.title} className="h-full w-full object-cover rounded-lg" />
+    </div>
+  );
+}
+
 function BookDetail() {
   const params = useParams();
   const bookId = params.id as unknown as import("@convex/convex/_generated/dataModel").Id<"books">;
@@ -32,19 +55,7 @@ function BookDetail() {
       </Link>
 
       <div className="grid md:grid-cols-2 gap-8">
-        {/* Cover */}
-        <div className="aspect-[3/4] bg-muted rounded-lg flex items-center justify-center">
-          {book.coverImage ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={book.coverImage}
-              alt={book.title}
-              className="h-full w-full object-cover rounded-lg"
-            />
-          ) : (
-            <BookOpen className="h-24 w-24 text-muted-foreground" />
-          )}
-        </div>
+        <BookDetailCover book={book} />
 
         {/* Info */}
         <div className="space-y-4">

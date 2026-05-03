@@ -80,4 +80,19 @@ http.route({
   }),
 });
 
+// Cover image upload endpoint
+http.route({
+  path: "/api/books/uploadCover",
+  method: "POST",
+  handler: httpAction(async (ctx, request) => {
+    const blob = await request.blob();
+    const storageId = await ctx.storage.store(blob);
+    const url = (await ctx.storage.getUrl(storageId))!;
+    return new Response(
+      JSON.stringify({ storageId, url }),
+      { headers: { "Content-Type": "application/json" } }
+    );
+  }),
+});
+
 export default http;

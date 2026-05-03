@@ -30,7 +30,13 @@
     "phase": "idle",
     "testFiles": [],
     "sourceFiles": [
-      "src/lib/auth-client.ts"
+      "src/app/(auth)/layout.tsx",
+      "convex/schema.ts",
+      "convex/books.ts",
+      "src/app/(unauth)/catalog/page.tsx",
+      "src/app/(unauth)/catalog/[id]/page.tsx",
+      "src/lib/compress-image.ts",
+      "convex/http.ts"
     ],
     "redVerificationPending": false
   },

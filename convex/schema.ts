@@ -37,6 +37,7 @@ export default defineSchema({
     category: v.string(),
     condition: v.string(),
     coverImage: v.optional(v.string()),
+    coverStorageId: v.optional(v.id("_storage")),
     status: v.string(),
     mode: v.string(),
     language: v.optional(v.string()),

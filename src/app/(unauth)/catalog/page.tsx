@@ -6,6 +6,29 @@ import { useState, Suspense } from "react";
 import Link from "next/link";
 import { BookOpen, Search } from "lucide-react";
 
+function BookCover({ book }: { book: any }) {
+  const coverUrl = useQuery(
+    api.books.getCoverUrl,
+    book.coverStorageId ? { storageId: book.coverStorageId } : "skip"
+  );
+  const src = coverUrl || book.coverImage;
+
+  if (!src) {
+    return (
+      <div className="aspect-[2/3] bg-muted rounded flex items-center justify-center">
+        <BookOpen className="h-12 w-12 text-muted-foreground" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="aspect-[2/3] bg-muted rounded overflow-hidden">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={src} alt={book.title} className="h-full w-full object-cover" />
+    </div>
+  );
+}
+
 function CatalogContent() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -121,18 +144,7 @@ function CatalogContent() {
               href={`/catalog/${book._id}`}
               className="rounded-lg border p-4 hover:border-primary transition-colors space-y-3"
             >
-              <div className="aspect-[3/4] bg-muted rounded flex items-center justify-center">
-                {book.coverImage ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={book.coverImage}
-                    alt={book.title}
-                    className="h-full w-full object-cover rounded"
-                  />
-                ) : (
-                  <BookOpen className="h-12 w-12 text-muted-foreground" />
-                )}
-              </div>
+              <BookCover book={book} />
               <div>
                 <h3 className="font-semibold line-clamp-2">{book.title}</h3>
                 <p className="text-sm text-muted-foreground">{book.author}</p>
