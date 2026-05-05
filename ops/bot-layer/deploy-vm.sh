@@ -32,7 +32,7 @@ rsync -az --delete \
   "$LOCAL_ROOT/" "$SSH_TARGET:$REMOTE_DIR/"
 
 echo "==> Installing production dependencies on VM..."
-ssh "$SSH_TARGET" "source ~/.profile 2>/dev/null || true; cd $REMOTE_DIR && pnpm install --prod --frozen-lockfile 2>&1 | tail -5 || npm install --prod 2>&1 | tail -5"
+ssh "$SSH_TARGET" "bash -lc 'source ~/.profile 2>/dev/null || true; cd \"$REMOTE_DIR\"; if command -v pnpm >/dev/null 2>&1; then pnpm install --prod --frozen-lockfile; else npm install --prod; fi' 2>&1 | tail -20"
 
 echo "==> Verifying .env.production on VM..."
 ensure_remote_env
