@@ -86,3 +86,33 @@ test("protected pages redirect after sign-out only once Better Auth reports succ
     assert.match(source, /window\.location\.replace\("\/sign-in"\)/);
   }
 });
+
+test("my-borrows page has borrow form and return button for /pinjam and /kembali parity", () => {
+  const source = read("src/app/(auth)/my-borrows/page.tsx");
+
+  // Borrow form (Ajukan Pinjaman)
+  assert.match(source, /Ajukan Pinjaman/);
+  assert.match(source, /api\.borrowRequests\.create/);
+  assert.match(source, /Cari Buku|Ketik judul atau penulis/);
+  assert.match(source, /durationDays/);
+
+  // Return button (Kembalikan)
+  assert.match(source, /Kembalikan/);
+  assert.match(source, /api\.transactions\.markReturned/);
+});
+
+test("drop-info page exists with static drop point locations for /drop parity", () => {
+  const source = read("src/app/(auth)/drop-info/page.tsx");
+
+  assert.match(source, /Titik Pengembalian/);
+  assert.match(source, /MapPin/);
+  assert.match(source, /dropPoints/);
+});
+
+test("sidebar nav includes drop-info link", () => {
+  const source = read("src/app/(auth)/layout.tsx");
+
+  assert.match(source, /\/drop-info/);
+  assert.match(source, /Drop Point/);
+  assert.match(source, /MapPin/);
+});

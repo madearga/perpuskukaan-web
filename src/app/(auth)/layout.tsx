@@ -11,6 +11,7 @@ import {
   User,
   Shield,
   LogOut,
+  MapPin,
 } from "lucide-react";
 import { useQuery } from "convex/react";
 import { api } from "@convex/convex/_generated/api";
@@ -30,6 +31,7 @@ export default function AuthLayout({
     { href: "/catalog", label: "Katalog", icon: BookOpen },
     { href: "/my-books", label: "Buku Saya", icon: Library },
     { href: "/my-borrows", label: "Pinjaman", icon: Bookmark },
+    { href: "/drop-info", label: "Drop Point", icon: MapPin },
     { href: "/wishlist", label: "Wishlist", icon: Heart },
     { href: "/profile", label: "Profil", icon: User },
   ];
