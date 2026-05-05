@@ -4,7 +4,7 @@ import { ThemeProvider } from "@/components/next-theme/theme-provider";
 import { Footer } from "@/components/footer";
 
 import { ConvexClientProvider } from "./ConvexClientProvider";
-import { MobileChatFab } from "@/components/mobile-chat-fab";
+
 
 export const metadata: Metadata = {
   title: "Perpuskukaan — P2P Library",
@@ -32,7 +32,7 @@ export default function RootLayout({
                 {children}
               </main>
               <Footer />
-              <MobileChatFab />
+              {/* Chat via Telegram: @Perpuskukaanbot */}
             </ConvexClientProvider>
             
           </ThemeProvider>

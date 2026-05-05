@@ -24,13 +24,12 @@ test("catalog page has mobile-first search and responsive cards", () => {
   assert.match(catalog, /min-h-\[44px\]/);
 });
 
-test("web chat entry exists and uses bot layer", () => {
-  const component = read("src/components/mobile-chat-fab.tsx");
+test("layout directs users to Telegram instead of web chat", () => {
+  const layout = read("src/app/layout.tsx");
 
-  assert.match(component, /\/api\/chat/);
-  assert.match(component, /fixed/);
-  assert.match(component, /bottom-/);
-  assert.match(component, /aria-label="Buka chat Perpuskukaan"/);
+  assert.doesNotMatch(layout, /MobileChatFab/);
+  assert.match(layout, /Telegram/);
+  assert.match(layout, /@Perpuskukaanbot/);
 });
 
 test("authenticated mobile pages use responsive spacing and touch-friendly actions", () => {
