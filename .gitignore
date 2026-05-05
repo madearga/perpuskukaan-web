@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# pi agent state
+.pi/
+
+# local secrets and generated archives
+*.tgz
