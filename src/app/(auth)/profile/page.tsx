@@ -202,6 +202,14 @@ export default function ProfilePage() {
         )}
       </div>
 
+      {/* Telegram / OpenClaw Sync Status */}
+      <div className="rounded-lg border p-6 space-y-3">
+        <h3 className="font-semibold">Telegram Public Chat</h3>
+        <p className="text-sm text-muted-foreground">
+          Public Telegram dijalankan oleh OpenClaw. Data buku, status akun, dan aktivitas tetap sinkron lewat Convex.
+        </p>
+      </div>
+
       {/* Profile Card */}
       <div className="rounded-lg border p-6 space-y-4">
         <div className="flex items-center gap-4">

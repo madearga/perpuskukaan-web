@@ -50,6 +50,29 @@ test("client auth surface is reduced to Google-only entry points", () => {
   assert.doesNotMatch(settingsSource, /Enable 2FA/);
 });
 
+test("profile page explains Telegram/OpenClaw linking state", () => {
+  const source = read("src/app/(auth)/profile/page.tsx");
+
+  assert.match(source, /Telegram/);
+  assert.match(source, /OpenClaw/);
+  assert.match(source, /Hubungkan/);
+  assert.match(source, /Terhubung/);
+});
+
+test("dashboard shows recent public agent actions", () => {
+  const source = read("src/app/(auth)/dashboard/client.tsx");
+
+  assert.match(source, /publicAgentQueries|recentPublicActions|recent public/i);
+});
+
+test("publicAgentQueries exposes getRecentPublicActions reading agentActions", () => {
+  const source = read("convex/publicAgentQueries.ts");
+
+  assert.match(source, /getRecentPublicActions/);
+  assert.match(source, /agentActions/);
+  assert.match(source, /telegram/);
+});
+
 test("protected pages redirect after sign-out only once Better Auth reports success", () => {
   const protectedHeaders = [
     "src/app/(auth)/layout.tsx",

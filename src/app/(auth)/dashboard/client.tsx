@@ -63,6 +63,26 @@ const WelcomeSection = () => {
   );
 };
 
+// Recent public agent actions from OpenClaw/Telegram
+const RecentPublicActions = () => {
+  const recentPublicActions = useQuery(api.publicAgentQueries.getRecentPublicActions);
+
+  return (
+    <section className="rounded-lg border p-4 space-y-2">
+      <h3 className="font-semibold">Aktivitas Chat Publik Terbaru</h3>
+      {(recentPublicActions ?? []).length === 0 ? (
+        <p className="text-sm text-muted-foreground">Belum ada aktivitas.</p>
+      ) : (
+        (recentPublicActions ?? []).map((item: any) => (
+          <div key={item._id} className="text-sm text-muted-foreground">
+            {item.action} — {item.resultSummary ?? item.status}
+          </div>
+        ))
+      )}
+    </section>
+  );
+};
+
 // Client wrapper for dashboard
 export function DashboardClient({ children }: { children: React.ReactNode }) {
   return (
@@ -70,6 +90,7 @@ export function DashboardClient({ children }: { children: React.ReactNode }) {
       <Header />
       <div className="space-y-8">
         <WelcomeSection />
+        <RecentPublicActions />
         {children}
       </div>
       <Toaster />
