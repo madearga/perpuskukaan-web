@@ -1,0 +1,23 @@
+[Unit]
+Description=Perpuskukaan Web - Bot Layer
+After=network.target
+
+[Service]
+Type=simple
+User=exedev
+WorkingDirectory=/opt/perpuskukaan-web
+EnvironmentFile=/opt/perpuskukaan-web/.env.production
+ExecStart=/usr/bin/node /opt/perpuskukaan-web/node_modules/.bin/next start -p 3001 -H 127.0.0.1
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=perpuskukaan-web
+
+# Security hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/opt/perpuskukaan-web
+
+[Install]
+WantedBy=multi-user.target
