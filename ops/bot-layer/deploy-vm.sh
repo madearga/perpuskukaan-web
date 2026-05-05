@@ -32,7 +32,7 @@ rsync -az --delete \
   "$LOCAL_ROOT/" "$SSH_TARGET:$REMOTE_DIR/"
 
 echo "==> Installing production dependencies on VM..."
-ssh "$SSH_TARGET" "bash -lc 'source ~/.profile 2>/dev/null || true; cd \"$REMOTE_DIR\"; if ! command -v pnpm >/dev/null 2>&1; then corepack enable; corepack prepare pnpm@10.28.0 --activate; fi; pnpm install --prod --frozen-lockfile'" 2>&1 | tail -20
+ssh "$SSH_TARGET" "bash -lc 'source ~/.profile 2>/dev/null || true; cd \"$REMOTE_DIR\"; if command -v pnpm >/dev/null 2>&1; then PNPM_CMD=pnpm; else corepack prepare pnpm@10.28.0 --activate; PNPM_CMD=\"corepack pnpm\"; fi; \$PNPM_CMD install --prod --frozen-lockfile'" 2>&1 | tail -20
 
 echo "==> Verifying .env.production on VM..."
 ensure_remote_env
