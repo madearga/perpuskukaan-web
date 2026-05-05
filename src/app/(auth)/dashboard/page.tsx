@@ -53,7 +53,7 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">
         <div className="rounded-lg border p-4">
           <div className="flex items-center gap-2 text-muted-foreground">
             <Library className="h-4 w-4" />
@@ -81,7 +81,7 @@ export default function DashboardPage() {
 
       <div className="rounded-lg border p-6">
         <h2 className="text-lg font-semibold mb-4">Aksi Cepat</h2>
-        <div className="grid md:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           {quickLinks.map((link) => {
             const Icon = link.icon;
             return (

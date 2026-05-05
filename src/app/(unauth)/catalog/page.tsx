@@ -76,48 +76,50 @@ function CatalogContent() {
         </p>
       </div>
 
-      {/* Search */}
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <input
-          type="text"
-          placeholder="Cari judul atau penulis..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full rounded-lg border bg-background py-2 pl-10 pr-4 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        />
-      </div>
+      {/* Mobile-sticky search area */}
+      <div className="sticky top-0 z-20 -mx-4 border-b bg-background/95 px-4 py-3 backdrop-blur md:static md:mx-0 md:border-0 md:bg-transparent md:px-0">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <input
+            type="text"
+            placeholder="Cari judul atau penulis..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="min-h-[44px] w-full rounded-lg border bg-background py-2 pl-10 pr-4 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          />
+        </div>
 
-      {/* Categories */}
-      <div className="flex flex-wrap gap-2">
-        <button
-          onClick={() => setSelectedCategory("")}
-          className={`rounded-full px-3 py-1 text-sm ${
-            selectedCategory === ""
-              ? "bg-primary text-primary-foreground"
-              : "bg-muted hover:bg-muted/80"
-          }`}
-        >
-          Semua
-        </button>
-        {categories.map((cat) => (
+        {/* Categories */}
+        <div className="mt-2 flex flex-wrap gap-2">
           <button
-            key={cat}
-            onClick={() => setSelectedCategory(cat)}
-            className={`rounded-full px-3 py-1 text-sm ${
-              selectedCategory === cat
+            onClick={() => setSelectedCategory("")}
+            className={`min-h-[36px] rounded-full px-3 py-1 text-sm ${
+              selectedCategory === ""
                 ? "bg-primary text-primary-foreground"
                 : "bg-muted hover:bg-muted/80"
             }`}
           >
-            {cat}
+            Semua
           </button>
-        ))}
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setSelectedCategory(cat)}
+              className={`min-h-[36px] rounded-full px-3 py-1 text-sm ${
+                selectedCategory === cat
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-muted hover:bg-muted/80"
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Book Grid */}
       {!displayBooks ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={i}
@@ -135,14 +137,15 @@ function CatalogContent() {
           <p className="mt-4 text-muted-foreground">
             Belum ada buku yang tersedia
           </p>
+          <p className="text-sm text-muted-foreground">Coba kata kunci lain atau tanyakan ke chat Perpuskukaan.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
           {displayBooks.map((book: any) => (
             <Link
               key={book._id}
               href={`/catalog/${book._id}`}
-              className="rounded-lg border p-4 hover:border-primary transition-colors space-y-3"
+              className="group rounded-2xl border bg-card p-4 transition-colors hover:border-primary/40 focus-within:ring-2 focus-within:ring-primary"
             >
               <BookCover book={book} />
               <div>

@@ -39,7 +39,7 @@ export default function WishlistPage() {
           </Link>
         </div>
       ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {wishlist.map((item: any) => (
             <div key={item._id} className="rounded-lg border p-4 space-y-3">
               <div className="aspect-[3/4] bg-muted rounded flex items-center justify-center">

@@ -58,7 +58,7 @@ export default function MyBooksPage() {
         <h1 className="text-2xl font-bold">Buku Saya</h1>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="flex items-center gap-2 rounded-md bg-primary text-primary-foreground px-4 py-2 text-sm font-medium"
+          className="flex items-center gap-2 rounded-md bg-primary text-primary-foreground px-4 py-2 text-sm font-medium min-h-[44px]"
         >
           {showForm ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
           {showForm ? "Tutup" : "Tambah Buku"}
@@ -119,7 +119,7 @@ export default function MyBooksPage() {
             <label className="text-sm font-medium">Cover Image URL</label>
             <input value={form.coverImage} onChange={(e) => setForm({ ...form, coverImage: e.target.value })} className="w-full rounded-md border p-2 text-sm mt-1" placeholder="https://..." />
           </div>
-          <button type="submit" className="rounded-md bg-primary text-primary-foreground px-6 py-2 text-sm font-medium">Simpan Buku</button>
+          <button type="submit" className="rounded-md bg-primary text-primary-foreground px-6 py-2 text-sm font-medium min-h-[44px]">Simpan Buku</button>
         </form>
       )}
 
@@ -129,7 +129,7 @@ export default function MyBooksPage() {
           <p>Belum ada buku. Tambahkan buku pertama Anda!</p>
         </div>
       ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {myBooks.map((book: any) => (
             <div key={book._id} className="rounded-lg border p-4 space-y-3">
               <div className="aspect-[3/4] bg-muted rounded flex items-center justify-center">

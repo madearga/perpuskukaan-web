@@ -15,6 +15,7 @@ import {
 import { useQuery } from "convex/react";
 import { api } from "@convex/convex/_generated/api";
 import { authClient } from "@/lib/auth-client";
+import { MobileBottomNav } from "@/components/mobile-bottom-nav";
 
 export default function AuthLayout({
   children,
@@ -48,7 +49,7 @@ export default function AuthLayout({
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-2rem)]">
+    <div className="flex min-h-[calc(100vh-2rem)] pb-20 md:pb-0">
       <aside className="w-64 border-r bg-muted/30 hidden md:block">
         <div className="p-4">
           <Link href="/" className="flex items-center gap-2 font-bold text-lg">
@@ -85,6 +86,9 @@ export default function AuthLayout({
         </nav>
       </aside>
       <main className="flex-1 p-4 md:p-6 overflow-auto">{children}</main>
+      <div className="md:hidden min-h-[44px]" aria-label="Mobile navigation">
+        <MobileBottomNav />
+      </div>
     </div>
   );
 }
