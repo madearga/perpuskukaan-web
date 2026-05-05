@@ -17,7 +17,7 @@ export function helpReply(): BotResponse {
 export function unlinkedAccountReply(): BotResponse {
   return {
     status: "unauthorized",
-    text: "Akun ini belum terhubung ke Perpuskukaan. Buka dashboard Perpuskukaan lalu hubungkan Telegram/WhatsApp kamu.",
+    text: "Akun ini belum terhubung ke Perpuskukaan. Kirim pesan **daftar** untuk mendaftar lewat Telegram, atau hubungkan Telegram/WhatsApp lewat dashboard Perpuskukaan.",
   };
 }
 

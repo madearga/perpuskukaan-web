@@ -18,6 +18,16 @@ export async function searchBooks(message: BotMessage, query: string) {
   });
 }
 
+export async function registerBotUser(message: BotMessage) {
+  const client = getConvexClient();
+  return await client.mutation(api.users.registerFromBot, {
+    channel: message.channel === "whatsapp" ? "whatsapp" : "telegram",
+    providerUserId: message.providerUserId,
+    username: message.username,
+    firstName: message.displayName,
+  });
+}
+
 export async function getMyBooks(message: BotMessage) {
   const client = getConvexClient();
   return await client.query(api.agentBooks.getMyBooksForAgent, {

@@ -1,7 +1,7 @@
 import { parseBotIntent } from "./intent-parser";
 import type { BotMessage, BotResponse } from "./types";
 import { fallbackReply, helpReply, missingFieldsReply, unlinkedAccountReply } from "./replies";
-import { getMyBooks, searchBooks } from "./convex-client";
+import { getMyBooks, registerBotUser, searchBooks } from "./convex-client";
 
 export async function handleBotMessage(message: BotMessage): Promise<BotResponse> {
   const intent = await parseBotIntent(message.text);
@@ -11,6 +11,23 @@ export async function handleBotMessage(message: BotMessage): Promise<BotResponse
   }
 
   switch (intent.intent) {
+    case "bot_register": {
+      try {
+        const result = await registerBotUser(message);
+        if (result.success) {
+          return {
+            status: "ok",
+            intent: "bot_register",
+            text: result.alreadyRegistered
+              ? "Akun Telegram kamu sudah terdaftar di Perpuskukaan. Silakan coba:"
+              : "Akun Telegram kamu sudah terdaftar. Silakan coba:",
+          };
+        }
+        return { status: "ok", intent: "bot_register", text: "Gagal mendaftar. Coba lagi nanti ya." };
+      } catch {
+        return { status: "ok", intent: "bot_register", text: "Gagal mendaftar. Coba lagi nanti ya." };
+      }
+    }
     case "help":
       return helpReply();
     case "search_books": {

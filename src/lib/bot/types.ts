@@ -16,6 +16,7 @@ export type BotIntentName =
   | "add_book"
   | "borrow_book"
   | "my_books"
+  | "bot_register"
   | "fallback_chat";
 
 export type BotIntent = {

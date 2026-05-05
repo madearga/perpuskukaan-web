@@ -6,6 +6,7 @@ export const botIntentNameSchema = z.enum([
   "add_book",
   "borrow_book",
   "my_books",
+  "bot_register",
   "fallback_chat",
 ]);
 

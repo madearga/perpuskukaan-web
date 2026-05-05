@@ -11,6 +11,7 @@ Return only JSON matching this shape:
 }
 
 Rules:
+- Use bot_register when user wants to register/sign up via Telegram.
 - Use search_books when user wants to find books.
 - Use add_book when user wants to add/share a book.
 - Use borrow_book when user wants to borrow/request a book.
@@ -34,7 +35,10 @@ function extractTitleAfterKeyword(text: string, keywords: string[]): string | un
 
 function fallbackIntent(text: string): ParsedBotIntent {
   const normalized = text.toLowerCase();
-  if (normalized.includes("bantuan") || normalized === "/start" || normalized === "/help") {
+  if (normalized === "/start" || normalized.includes("daftar") || normalized.includes("register")) {
+    return { intent: "bot_register", confidence: 0.85, fields: {}, missingFields: [] };
+  }
+  if (normalized.includes("bantuan") || normalized === "/help") {
     return { intent: "help", confidence: 0.8, fields: {}, missingFields: [] };
   }
   if (normalized.includes("buku saya") || normalized.includes("koleksi saya")) {

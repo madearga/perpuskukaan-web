@@ -52,6 +52,15 @@ test("agent book operations require linked channel identity and audit action", (
   assert.doesNotMatch(source, /process\.env\.CONVEX_DEPLOY/);
 });
 
+test("bot self-registration creates user + channel identity", () => {
+  const source = read("convex/users.ts");
+
+  assert.match(source, /registerFromBot/);
+  assert.match(source, /channel.*telegram.*whatsapp/);
+  assert.match(source, /userIdentities/);
+  assert.match(source, /providerUserId:\s*args\.providerUserId/);
+});
+
 test("web Telegram linking creates Bot Layer channel identity", () => {
   const source = read("convex/users.ts");
 

@@ -438,3 +438,62 @@ export const register = mutation({
     return { success: true, message: "Registration successful", userId };
   },
 });
+
+// ─── Bot self-registration (no web account needed) ───
+
+export const registerFromBot = mutation({
+  args: {
+    channel: v.union(v.literal("telegram"), v.literal("whatsapp")),
+    providerUserId: v.string(),
+    username: v.optional(v.string()),
+    firstName: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const now = Date.now();
+
+    // Check existing identity first
+    const existingIdentity = await ctx.db
+      .query("userIdentities")
+      .withIndex("by_provider_user", (q: any) =>
+        q.eq("provider", args.channel).eq("providerUserId", args.providerUserId)
+      )
+      .first();
+
+    if (existingIdentity) {
+      return { success: true, alreadyRegistered: true, userId: existingIdentity.userId };
+    }
+
+    // Create minimal user record (no email, bot-only)
+    const userId = await ctx.db.insert("users", {
+      email: undefined,
+      telegramId: args.channel === "telegram" ? args.providerUserId : undefined,
+      username: args.username,
+      firstName: args.firstName,
+      lastName: undefined,
+      reputation: 100,
+      totalBooksShared: 0,
+      totalBorrows: 0,
+      totalLends: 0,
+      isVerified: false,
+      isActive: true,
+      role: "user",
+      linkedUserIds: [],
+      createdAt: now,
+      updatedAt: now,
+    });
+
+    // Create Bot Layer channel identity
+    await ctx.db.insert("userIdentities", {
+      userId,
+      provider: args.channel,
+      providerUserId: args.providerUserId,
+      username: args.username,
+      displayName: args.firstName,
+      verifiedAt: now,
+      createdAt: now,
+      updatedAt: now,
+    });
+
+    return { success: true, alreadyRegistered: false, userId };
+  },
+});

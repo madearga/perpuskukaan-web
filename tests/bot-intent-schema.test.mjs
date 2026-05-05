@@ -51,4 +51,6 @@ test("intent parser has robust local fallback for common Indonesian book request
   assert.match(source, /buku saya/);
   assert.match(source, /tambah|tambahkan|nambah/);
   assert.match(source, /pinjam|meminjam/);
+  assert.match(source, /bot_register/);
+  assert.match(source, /daftar/);
 });
