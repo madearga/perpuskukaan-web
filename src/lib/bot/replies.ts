@@ -6,6 +6,7 @@ export function helpReply(): BotResponse {
     intent: "help",
     text: [
       "Bantuan Perpuskukaan:",
+      "• daftar — daftar akun Telegram kamu",
       "• cari buku Atomic Habits",
       "• tambahkan buku Laskar Pelangi penulis Andrea Hirata kondisi bagus",
       "• buku saya apa saja?",
