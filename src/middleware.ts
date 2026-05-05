@@ -2,6 +2,7 @@ import { getSessionCookie } from "better-auth/cookies";
 import { NextRequest, NextResponse } from "next/server";
 
 const signInRoutes = ["/sign-in"];
+const publicRoutes = ["/help"];
 
 // In-memory rate limiter (per IP)
 const rateLimit = new Map<string, number[]>();
@@ -36,8 +37,13 @@ export default async function middleware(request: NextRequest) {
   // ====== AUTH PROTECTION ======
   const sessionCookie = getSessionCookie(request);
   const isSignInRoute = signInRoutes.includes(request.nextUrl.pathname);
+  const isPublicRoute = publicRoutes.includes(request.nextUrl.pathname);
 
   if (isSignInRoute && !sessionCookie) {
+    return NextResponse.next();
+  }
+
+  if (isPublicRoute) {
     return NextResponse.next();
   }
 

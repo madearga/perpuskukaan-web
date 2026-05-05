@@ -116,3 +116,42 @@ test("sidebar nav includes drop-info link", () => {
   assert.match(source, /Drop Point/);
   assert.match(source, /MapPin/);
 });
+
+test("help page exists and uses Convex query for markdown content", () => {
+  const pageSource = read("src/app/help/page.tsx");
+  const querySource = read("convex/siteContent.ts");
+
+  // Help page fetches from Convex
+  assert.match(pageSource, /useQuery/);
+  assert.match(pageSource, /api\.siteContent\.getHelpContent/);
+
+  // Help page renders markdown manually (no external lib)
+  assert.match(pageSource, /renderMarkdown/);
+  assert.match(pageSource, /#{1,6}/);
+
+  // Convex query exists
+  assert.match(querySource, /getHelpContent/);
+  assert.match(querySource, /siteContent/);
+  assert.match(querySource, /help-page/);
+  assert.match(querySource, /DEFAULT_HELP_MARKDOWN/);
+
+  // Schema has siteContent table
+  const schemaSource = read("convex/schema.ts");
+  assert.match(schemaSource, /siteContent.*defineTable/);
+  assert.match(schemaSource, /by_key/);
+});
+
+test("footer has accessible link to help page", () => {
+  const footerSource = read("src/components/footer.tsx");
+
+  assert.match(footerSource, /href="\/help"/);
+  assert.match(footerSource, /Petunjuk/);
+});
+
+test("middleware allows /help as a public route without auth", () => {
+  const middlewareSource = read("src/middleware.ts");
+
+  assert.match(middlewareSource, /publicRoutes/);
+  assert.match(middlewareSource, /\/help/);
+  assert.match(middlewareSource, /isPublicRoute/);
+});

@@ -130,6 +130,12 @@ export default defineSchema({
     .index("by_user", ["userId"])
     .index("by_provider_user", ["provider", "providerUserId"]),
 
+  siteContent: defineTable({
+    key: v.string(),
+    markdown: v.string(),
+    updatedAt: v.number(),
+  }).index("by_key", ["key"]),
+
   agentActions: defineTable({
     channel: v.string(),
     providerUserId: v.string(),
