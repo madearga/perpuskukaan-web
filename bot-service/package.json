@@ -1,0 +1,12 @@
+{
+  "name": "perpuskukaan-bot-service",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "whatsapp": "tsx whatsapp.ts"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "^7.0.0",
+    "tsx": "^4.20.6"
+  }
+}

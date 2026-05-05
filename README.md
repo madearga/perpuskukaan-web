@@ -79,6 +79,10 @@ convex/
 └── emails/              # Email templates
 ```
 
+## Natural Language Bot Layer
+
+Perpuskukaan supports a public-safe bot architecture for Telegram, WhatsApp, and Web chat. See [`docs/bot-layer.md`](docs/bot-layer.md).
+
 ## License
 
 MIT

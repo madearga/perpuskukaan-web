@@ -139,3 +139,23 @@ export const addBookFromAgent = mutation({
     return { success: true, duplicate: false, bookId };
   },
 });
+
+export const getMyBooksForAgent = query({
+  args: {
+    channel: channelValidator,
+    providerUserId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const user = await resolveChannelUser(ctx, args.channel, args.providerUserId);
+    if (!user) {
+      return { success: false, error: "Akun channel belum terhubung ke Perpuskukaan." };
+    }
+
+    const books = await ctx.db
+      .query("books")
+      .withIndex("by_owner", (q) => q.eq("ownerId", user._id))
+      .collect();
+
+    return { success: true, books };
+  },
+});
