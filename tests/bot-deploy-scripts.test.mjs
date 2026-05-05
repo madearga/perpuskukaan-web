@@ -64,6 +64,12 @@ test("service listens on port 3001", () => {
   assert.ok(content.includes("3001"), "should use port 3001");
 });
 
+test("service runs Next CLI with node-compatible entrypoint", () => {
+  const content = read("ops/bot-layer/perpuskukaan-web.service");
+  assert.ok(content.includes("node_modules/next/dist/bin/next"), "should not execute shell .bin wrapper with node");
+  assert.ok(!content.includes("node_modules/.bin/next"), "node cannot run pnpm shell wrapper directly");
+});
+
 test("service binds to localhost only", () => {
   const content = read("ops/bot-layer/perpuskukaan-web.service");
   assert.ok(content.includes("127.0.0.1"), "should bind to 127.0.0.1 only");
