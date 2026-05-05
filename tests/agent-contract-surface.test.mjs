@@ -52,6 +52,15 @@ test("agent book operations require linked channel identity and audit action", (
   assert.doesNotMatch(source, /process\.env\.CONVEX_DEPLOY/);
 });
 
+test("web Telegram linking creates Bot Layer channel identity", () => {
+  const source = read("convex/users.ts");
+
+  assert.match(source, /upsertTelegramIdentity/);
+  assert.match(source, /userIdentities/);
+  assert.match(source, /provider:\s*"telegram"/);
+  assert.match(source, /providerUserId:\s*args\.telegramId/);
+});
+
 test("agent identity model supports WhatsApp migration", () => {
   const schema = read("convex/schema.ts");
   const runbook = read("ops/hermes/README.md");

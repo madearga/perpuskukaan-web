@@ -2,6 +2,44 @@ import { internalMutation, mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 import { betterAuthComponent } from "./auth";
 
+async function upsertTelegramIdentity(
+  ctx: any,
+  args: {
+    userId: any;
+    telegramId: string;
+    username?: string;
+    firstName?: string;
+  }
+) {
+  const now = Date.now();
+  const existing = await ctx.db
+    .query("userIdentities")
+    .withIndex("by_provider_user", (q: any) =>
+      q.eq("provider", "telegram").eq("providerUserId", args.telegramId)
+    )
+    .first();
+
+  const patch = {
+    userId: args.userId,
+    provider: "telegram" as const,
+    providerUserId: args.telegramId,
+    username: args.username,
+    displayName: args.firstName,
+    verifiedAt: now,
+    updatedAt: now,
+  };
+
+  if (existing) {
+    await ctx.db.patch(existing._id, patch);
+    return existing._id;
+  }
+
+  return await ctx.db.insert("userIdentities", {
+    ...patch,
+    createdAt: now,
+  });
+}
+
 export const syncUserCreation = internalMutation({
   args: { email: v.string() },
   handler: async (ctx, args) => {
@@ -286,6 +324,12 @@ export const connectTelegram = mutation({
         reputation: Math.max(webUser.reputation || 0, botUser.reputation || 0),
         updatedAt: Date.now(),
       });
+      await upsertTelegramIdentity(ctx, {
+        userId: args.webUserId,
+        telegramId: args.telegramId,
+        username: args.username,
+        firstName: args.firstName,
+      });
 
       return { success: true, merged: true };
     }
@@ -296,6 +340,12 @@ export const connectTelegram = mutation({
       username: args.username || webUser.username,
       firstName: args.firstName || webUser.firstName,
       updatedAt: Date.now(),
+    });
+    await upsertTelegramIdentity(ctx, {
+      userId: args.webUserId,
+      telegramId: args.telegramId,
+      username: args.username,
+      firstName: args.firstName,
     });
 
     return { success: true, merged: false };
