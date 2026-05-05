@@ -1,13 +1,13 @@
 schema: spec-driven
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+context: |
+  Tech stack: Next.js 16, TypeScript, Convex, Better Auth, Tailwind CSS, pnpm
+  Runtime: Vercel (web UI), perpuskukaan.exe.xyz VM (bot/gateway)
+  Chat gateway: OpenClaw for public Telegram, /api/public-agent/action for Convex bridge
+  Database: Convex (source of truth for users, books, borrows, agent actions)
+  Identity: Better Auth (Google OAuth) + userIdentities table (Telegram/WhatsApp channels)
+  Conventions: conventional commits, Indonesian public-facing text, TDD with node:test
+  Domain: P2P library/book sharing platform (Perpuskukaan)
 
 # Per-artifact rules (optional)
 # Add custom rules for specific artifacts.
