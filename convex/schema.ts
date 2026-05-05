@@ -112,4 +112,45 @@ export default defineSchema({
   })
     .index("by_user", ["userId"])
     .index("by_book", ["bookId"]),
+
+  userIdentities: defineTable({
+    userId: v.id("users"),
+    provider: v.union(
+      v.literal("telegram"),
+      v.literal("whatsapp"),
+      v.literal("web")
+    ),
+    providerUserId: v.string(),
+    username: v.optional(v.string()),
+    displayName: v.optional(v.string()),
+    verifiedAt: v.number(),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index("by_user", ["userId"])
+    .index("by_provider_user", ["provider", "providerUserId"]),
+
+  agentActions: defineTable({
+    channel: v.string(),
+    providerUserId: v.string(),
+    appUserId: v.optional(v.id("users")),
+    action: v.string(),
+    idempotencyKey: v.string(),
+    input: v.string(),
+    status: v.union(
+      v.literal("drafted"),
+      v.literal("confirmed"),
+      v.literal("applied"),
+      v.literal("rejected"),
+      v.literal("failed")
+    ),
+    resultSummary: v.optional(v.string()),
+    resultJson: v.optional(v.string()),
+    error: v.optional(v.string()),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index("by_idempotency_key", ["idempotencyKey"])
+    .index("by_channel_user", ["channel", "providerUserId"])
+    .index("by_app_user", ["appUserId"]),
 });
