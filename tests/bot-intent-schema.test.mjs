@@ -39,6 +39,21 @@ test("intent parser requires JSON-only parser output and validates with zod", ()
   assert.match(source, /You are Perpuskukaan intent parser/);
   assert.match(source, /Return only JSON/);
   assert.match(source, /ZAI_API_KEY|GLM_API_KEY|HERMES/);
+  assert.match(source, /bot_register/);
+});
+
+test("intent parser supports multi-provider LLM chain with local fallback", () => {
+  const source = read("src/lib/bot/intent-parser.ts");
+
+  assert.match(source, /callLLM/);
+  assert.match(source, /"zai" \| "nvidia"/);
+  assert.match(source, /nvidia\/nemotron/);
+  assert.match(source, /integrate\.api\.nvidia\.com/);
+  assert.match(source, /NVIDIA_API_KEY/);
+  assert.match(source, /glm-5\.1/);
+  assert.match(source, /parseJsonFromText/);
+  assert.match(source, /console\.(warn|info)/);
+  assert.match(source, /local-degraded/);
 });
 
 test("intent parser has robust local fallback for common Indonesian book requests", () => {
@@ -53,4 +68,7 @@ test("intent parser has robust local fallback for common Indonesian book request
   assert.match(source, /pinjam|meminjam/);
   assert.match(source, /bot_register/);
   assert.match(source, /daftar/);
+  assert.match(source, /ada ga/);
+  assert.match(source, /buku tentang/);
+  assert.match(source, /mulai darimana/);
 });
