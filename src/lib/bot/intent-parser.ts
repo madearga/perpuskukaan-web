@@ -22,10 +22,41 @@ Rules:
 - Never invent IDs.
 - Return only JSON. No markdown.`;
 
+function extractTitleAfterKeyword(text: string, keywords: string[]): string | undefined {
+  const pattern = new RegExp(`(?:${keywords.join("|")})\\s+(?:buku\\s+)?(.+)`, "i");
+  const match = text.match(pattern);
+  const title = match?.[1]
+    ?.replace(/\b(penulis|karya|kondisi|kategori|selama|untuk)\b.*$/i, "")
+    .replace(/[.,;:]+$/g, "")
+    .trim();
+  return title || undefined;
+}
+
 function fallbackIntent(text: string): ParsedBotIntent {
   const normalized = text.toLowerCase();
   if (normalized.includes("bantuan") || normalized === "/start" || normalized === "/help") {
     return { intent: "help", confidence: 0.8, fields: {}, missingFields: [] };
+  }
+  if (normalized.includes("buku saya") || normalized.includes("koleksi saya")) {
+    return { intent: "my_books", confidence: 0.75, fields: {}, missingFields: [] };
+  }
+  if (/(tambah|tambahkan|nambah|daftarkan|share|punya buku)/i.test(normalized)) {
+    const title = extractTitleAfterKeyword(text, ["tambah", "tambahkan", "nambah", "daftarkan", "punya"]);
+    const fields: ParsedBotIntent["fields"] = {};
+    if (title) fields.title = title;
+    const missingFields = ["title", "author", "category", "condition", "mode"].filter(
+      (field) => fields[field] === undefined,
+    );
+    return { intent: "add_book", confidence: 0.72, fields, missingFields };
+  }
+  if (/(pinjam|meminjam|mau pinjam|request buku)/i.test(normalized)) {
+    const title = extractTitleAfterKeyword(text, ["pinjam", "meminjam", "mau pinjam", "request"]);
+    const durationMatch = normalized.match(/(\d+)\s*(hari|day|days)/);
+    const fields: ParsedBotIntent["fields"] = {};
+    if (title) fields.title = title;
+    if (durationMatch) fields.durationDays = Number(durationMatch[1]);
+    const missingFields = ["title", "durationDays"].filter((field) => fields[field] === undefined);
+    return { intent: "borrow_book", confidence: 0.72, fields, missingFields };
   }
   if (normalized.includes("cari") || normalized.includes("search")) {
     return {

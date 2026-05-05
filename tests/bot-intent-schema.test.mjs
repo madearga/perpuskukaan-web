@@ -40,3 +40,15 @@ test("intent parser requires JSON-only parser output and validates with zod", ()
   assert.match(source, /Return only JSON/);
   assert.match(source, /ZAI_API_KEY|GLM_API_KEY|HERMES/);
 });
+
+test("intent parser has robust local fallback for common Indonesian book requests", () => {
+  const source = read("src/lib/bot/intent-parser.ts");
+
+  assert.match(source, /extractTitleAfterKeyword/);
+  assert.match(source, /add_book/);
+  assert.match(source, /borrow_book/);
+  assert.match(source, /my_books/);
+  assert.match(source, /buku saya/);
+  assert.match(source, /tambah|tambahkan|nambah/);
+  assert.match(source, /pinjam|meminjam/);
+});
