@@ -33,9 +33,11 @@ test("deploy-vm.sh preserves remote environment secrets", () => {
   assert.ok(content.includes("ensure_remote_env"), "should verify remote env after sync");
 });
 
-test("deploy-vm.sh loads remote shell profile before package commands", () => {
+test("deploy-vm.sh loads or activates pnpm before package commands", () => {
   const content = read("ops/bot-layer/deploy-vm.sh");
   assert.ok(content.includes("source ~/.profile"), "should load pnpm/corepack PATH on VM");
+  assert.ok(content.includes("corepack prepare"), "should activate pnpm via corepack when missing");
+  assert.ok(!/[^p]npm install --prod/.test(content), "should not use npm for pnpm link: dependencies");
 });
 
 test("deploy-vm.sh does NOT set Telegram webhook", () => {
