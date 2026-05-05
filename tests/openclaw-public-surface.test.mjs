@@ -53,3 +53,89 @@ test("public agent route rejects wrong secret with 403", () => {
   assert.match(source, /forbidden/);
   assert.match(source, /403/);
 });
+
+// --- Task 3: Public persona, examples, and rollout scripts ---
+
+test("OpenClaw public prompt forbids raw admin command leakage", () => {
+  const prompt = read("ops/openclaw/public/system-prompt.md");
+
+  // Must reference Convex as source of truth
+  assert.match(prompt, /Convex is the source of truth/);
+
+  // Must explicitly forbid raw gateway command exposure
+  assert.match(prompt, /never expose raw gateway commands/i);
+
+  // Must list all allowlisted public actions
+  assert.match(prompt, /register/);
+  assert.match(prompt, /search_books/);
+  assert.match(prompt, /my_books/);
+  assert.match(prompt, /add_book_draft/);
+  assert.match(prompt, /borrow_draft/);
+
+  // Must require Indonesian replies
+  assert.match(prompt, /balas dalam Bahasa Indonesia/i);
+});
+
+test("OpenClaw public prompt requires idempotency keys for write actions", () => {
+  const prompt = read("ops/openclaw/public/system-prompt.md");
+
+  assert.match(prompt, /idempotencyKey/);
+});
+
+test("OpenClaw few-shot examples cover core public actions", () => {
+  const examples = read("ops/openclaw/public/examples.md");
+
+  // Must include examples for search, my_books, add_book_draft, borrow_draft, and register
+  assert.match(examples, /search_books/);
+  assert.match(examples, /my_books/);
+  assert.match(examples, /add_book_draft/);
+  assert.match(examples, /borrow_draft/);
+  assert.match(examples, /register/);
+});
+
+test("OpenClaw enable script stops poller and starts openclaw", () => {
+  const enable = read("ops/openclaw/scripts/enable-public-gateway.sh");
+
+  assert.match(enable, /set -euo pipefail/);
+  assert.match(enable, /systemctl stop perpuskukaan-telegram-poller/);
+  assert.match(enable, /systemctl disable perpuskukaan-telegram-poller/);
+  assert.match(enable, /systemctl enable --now openclaw/);
+  assert.match(enable, /systemctl is-active openclaw/);
+
+  // Safety: must not deploy or touch running services beyond this switch
+  assert.doesNotMatch(enable, /npx convex deploy/);
+  assert.doesNotMatch(enable, /git push/);
+  assert.doesNotMatch(enable, /rsync/);
+});
+
+test("OpenClaw rollback script stops openclaw and restarts poller", () => {
+  const rollback = read("ops/openclaw/scripts/rollback-to-bot-layer.sh");
+
+  assert.match(rollback, /set -euo pipefail/);
+  assert.match(rollback, /systemctl stop openclaw/);
+  assert.match(rollback, /systemctl disable openclaw/);
+  assert.match(rollback, /systemctl enable --now perpuskukaan-telegram-poller/);
+  assert.match(rollback, /systemctl is-active perpuskukaan-telegram-poller/);
+
+  // Safety: must not deploy or push
+  assert.doesNotMatch(rollback, /npx convex deploy/);
+  assert.doesNotMatch(rollback, /git push/);
+  assert.doesNotMatch(rollback, /rsync/);
+});
+
+test("rollout scripts use bash shebang and are safe", () => {
+  const enable = read("ops/openclaw/scripts/enable-public-gateway.sh");
+  const rollback = read("ops/openclaw/scripts/rollback-to-bot-layer.sh");
+
+  // Must have proper shebang
+  assert.match(enable, /^#!/);
+  assert.match(rollback, /^#!/);
+
+  // Must use set -euo pipefail for safety
+  assert.match(enable, /set -euo pipefail/);
+  assert.match(rollback, /set -euo pipefail/);
+
+  // Must not contain dangerous patterns
+  assert.doesNotMatch(enable, /rm -rf \//);
+  assert.doesNotMatch(rollback, /rm -rf \//);
+});
