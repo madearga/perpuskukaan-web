@@ -7,11 +7,14 @@ const read = (relativePath) =>
 
 test("authenticated layout includes mobile bottom navigation", () => {
   const layout = read("src/app/(auth)/layout.tsx");
+  const bottomNav = read("src/components/mobile-bottom-nav.tsx");
 
   assert.match(layout, /MobileBottomNav/);
-  assert.match(layout, /md:hidden/);
-  assert.match(layout, /min-h-\[44px\]/);
-  assert.match(layout, /aria-label="Mobile navigation"/);
+  assert.match(bottomNav, /md:hidden/);
+  assert.match(bottomNav, /min-h-\[50px\]/);
+  assert.match(bottomNav, /aria-label="Mobile navigation"/);
+  assert.match(bottomNav, /Search/);
+  assert.match(bottomNav, /MapPin/);
 });
 
 test("catalog page has mobile-first search and responsive cards", () => {

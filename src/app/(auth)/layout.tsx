@@ -51,7 +51,7 @@ export default function AuthLayout({
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-2rem)] pb-20 md:pb-0">
+    <div className="flex min-h-[calc(100vh-2rem)] pb-[72px] md:pb-0">
       <aside className="w-64 border-r bg-muted/30 hidden md:block">
         <div className="p-4">
           <Link href="/" className="flex items-center gap-2 font-bold text-lg">
