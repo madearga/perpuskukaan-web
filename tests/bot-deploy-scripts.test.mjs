@@ -27,6 +27,17 @@ test("deploy-vm.sh has safety guards", () => {
   assert.ok(content.includes("systemctl restart"), "should restart service");
 });
 
+test("deploy-vm.sh preserves remote environment secrets", () => {
+  const content = read("ops/bot-layer/deploy-vm.sh");
+  assert.ok(content.includes("--exclude '.env.production'"), "should not overwrite remote env");
+  assert.ok(content.includes("ensure_remote_env"), "should verify remote env after sync");
+});
+
+test("deploy-vm.sh loads remote shell profile before package commands", () => {
+  const content = read("ops/bot-layer/deploy-vm.sh");
+  assert.ok(content.includes("source ~/.profile"), "should load pnpm/corepack PATH on VM");
+});
+
 test("deploy-vm.sh does NOT set Telegram webhook", () => {
   const content = read("ops/bot-layer/deploy-vm.sh");
   assert.ok(!content.includes("setWebhook"), "should not call setWebhook");
