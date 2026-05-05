@@ -37,6 +37,16 @@ export default function AuthLayout({
     navItems.push({ href: "/admin", label: "Admin", icon: Shield });
   }
 
+  const handleSignOut = async () => {
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          window.location.replace("/sign-in");
+        },
+      },
+    });
+  };
+
   return (
     <div className="flex min-h-[calc(100vh-2rem)]">
       <aside className="w-64 border-r bg-muted/30 hidden md:block">
@@ -66,7 +76,7 @@ export default function AuthLayout({
             );
           })}
           <button
-            onClick={() => authClient.signOut({ fetchOptions: { onSuccess: () => { window.location.href = "/sign-in" } } })}
+            onClick={handleSignOut}
             className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
           >
             <LogOut className="h-4 w-4" />

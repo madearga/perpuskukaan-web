@@ -83,7 +83,7 @@ export default function AdminPage() {
               <div key={t._id} className="flex items-center justify-between text-sm">
                 <span>{t.book?.title}</span>
                 <span className="text-red-600">
-                  {Math.ceil((Date.now() - t.dueDate) / (1000 * 60 * 60 * 24))} hari terlambat
+                  {t.daysOverdue} hari terlambat
                 </span>
               </div>
             ))}

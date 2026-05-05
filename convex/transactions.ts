@@ -35,6 +35,7 @@ export const getOverdue = query({
   args: {},
   handler: async (ctx) => {
     const now = Date.now();
+    const dayMs = 1000 * 60 * 60 * 24;
     const all = await ctx.db
       .query("transactions")
       .withIndex("by_status", (q) => q.eq("status", "active"))
@@ -48,7 +49,13 @@ export const getOverdue = query({
         const borrower = await ctx.db.get(t.borrowerId);
         const lender = await ctx.db.get(t.lenderId);
         if ((borrower && borrower.isActive === false) || (lender && lender.isActive === false)) return null;
-        return { ...t, book, borrower, lender };
+        return {
+          ...t,
+          book,
+          borrower,
+          lender,
+          daysOverdue: Math.ceil((now - t.dueDate) / dayMs),
+        };
       })
     );
 

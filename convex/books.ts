@@ -95,7 +95,7 @@ export const search = query({
     const limit = args.limit ?? 20;
 
     // Search by title
-    let titleResults = await ctx.db
+    const titleResults = await ctx.db
       .query("books")
       .withSearchIndex("search_books", (q) => {
         let search = q.search("title", args.query);
@@ -107,7 +107,7 @@ export const search = query({
       .take(limit);
 
     // Search by author
-    let authorResults = await ctx.db
+    const authorResults = await ctx.db
       .query("books")
       .withSearchIndex("search_authors", (q) => {
         let search = q.search("author", args.query);

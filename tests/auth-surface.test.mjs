@@ -52,9 +52,8 @@ test("client auth surface is reduced to Google-only entry points", () => {
 
 test("protected pages redirect after sign-out only once Better Auth reports success", () => {
   const protectedHeaders = [
+    "src/app/(auth)/layout.tsx",
     "src/app/(auth)/dashboard/client.tsx",
-    "src/app/(auth)/documentation/client.tsx",
-    "src/app/(auth)/api-reference/client.tsx",
   ].map(read);
 
   for (const source of protectedHeaders) {
