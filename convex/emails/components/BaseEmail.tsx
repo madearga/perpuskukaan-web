@@ -77,7 +77,7 @@ export function BaseEmail({
   previewText,
   footerLinks = [],
   footerText,
-  brandName = "Convexbetterkuka",
+  brandName = "Perpuskukaan",
   brandTagline = "Full-stack authentication app",
   brandLogoUrl,
 }: BaseEmailProps) {

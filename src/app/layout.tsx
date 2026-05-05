@@ -7,8 +7,8 @@ import { ConvexClientProvider } from "./ConvexClientProvider";
 import { MobileChatFab } from "@/components/mobile-chat-fab";
 
 export const metadata: Metadata = {
-  title: "Convexbetterkuka",
-  description: "Convexbetterkuka - Full-stack authentication app",
+  title: "Perpuskukaan — P2P Library",
+  description: "Perpuskukaan — Platform pinjam dan berbagi buku antar komunitas",
 };
 
 export default function RootLayout({
@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="id" suppressHydrationWarning>
       <body
         className="min-h-[calc(100vh-2rem)] flex flex-col gap-4 antialiased"
       >
