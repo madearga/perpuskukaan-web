@@ -5,7 +5,7 @@ import { readFileSync } from "node:fs";
 const read = (relativePath) =>
   readFileSync(new URL(`../${relativePath}`, import.meta.url), "utf8");
 
-test("publicAgent exposes register, search, my books, add draft, borrow draft", () => {
+test("publicAgent exposes all 10 public actions", () => {
   const source = read("convex/publicAgent.ts");
 
   assert.match(source, /registerTelegramUser/);
@@ -13,6 +13,11 @@ test("publicAgent exposes register, search, my books, add draft, borrow draft", 
   assert.match(source, /getMyBooks/);
   assert.match(source, /createBookDraft/);
   assert.match(source, /createBorrowDraft/);
+  assert.match(source, /getMyBorrows/);
+  assert.match(source, /getIncomingBorrowRequests/);
+  assert.match(source, /approveBorrow/);
+  assert.match(source, /rejectBorrow/);
+  assert.match(source, /returnBook/);
   assert.match(source, /providerUserId/);
   assert.match(source, /idempotencyKey/);
 });
@@ -52,4 +57,50 @@ test("publicAgent createBorrowDraft uses bookId reference", () => {
   assert.match(source, /bookId/);
   assert.match(source, /durationDays/);
   assert.match(source, /public\.createBorrowDraft/);
+});
+
+test("publicAgent getMyBorrows queries borrowRequests and transactions by borrower", () => {
+  const source = read("convex/publicAgent.ts");
+
+  assert.match(source, /getMyBorrows/);
+  assert.match(source, /by_borrower/);
+  assert.match(source, /borrowRequests/);
+  assert.match(source, /transactions/);
+});
+
+test("publicAgent getIncomingBorrowRequests queries borrowRequests by lender", () => {
+  const source = read("convex/publicAgent.ts");
+
+  assert.match(source, /getIncomingBorrowRequests/);
+  assert.match(source, /by_lender/);
+});
+
+test("publicAgent approveBorrow verifies lender ownership and uses idempotency", () => {
+  const source = read("convex/publicAgent.ts");
+
+  assert.match(source, /approveBorrow/);
+  assert.match(source, /public\.approveBorrow/);
+  assert.match(source, /NOT_AUTHORIZED/);
+  assert.match(source, /lenderId/);
+  assert.match(source, /by_idempotency_key/);
+});
+
+test("publicAgent rejectBorrow verifies lender ownership and uses idempotency", () => {
+  const source = read("convex/publicAgent.ts");
+
+  assert.match(source, /rejectBorrow/);
+  assert.match(source, /public\.rejectBorrow/);
+  assert.match(source, /NOT_AUTHORIZED/);
+  assert.match(source, /rejectionReason/);
+});
+
+test("publicAgent returnBook verifies borrower or lender, updates book to available", () => {
+  const source = read("convex/publicAgent.ts");
+
+  assert.match(source, /returnBook/);
+  assert.match(source, /public\.returnBook/);
+  assert.match(source, /NOT_AUTHORIZED/);
+  assert.match(source, /available/);
+  assert.match(source, /TRANSACTION_NOT_ACTIVE/);
+  assert.match(source, /returnDate/);
 });

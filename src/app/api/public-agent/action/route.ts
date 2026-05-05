@@ -11,6 +11,11 @@ const ALLOWED_ACTIONS = [
   "my_books",
   "add_book_draft",
   "borrow_draft",
+  "my_borrows",
+  "incoming_borrow_requests",
+  "approve_borrow",
+  "reject_borrow",
+  "return_book",
 ] as const;
 
 type AllowedAction = (typeof ALLOWED_ACTIONS)[number];
@@ -51,6 +56,38 @@ const handlers: Record<AllowedAction, (body: Record<string, unknown>) => Promise
       idempotencyKey: body.idempotencyKey as string,
       bookId: body.bookId as any,
       durationDays: body.durationDays as number,
+    }),
+  my_borrows: async (body) =>
+    client.query(api.publicAgent.getMyBorrows, {
+      channel: "telegram",
+      providerUserId: body.providerUserId as string,
+    }),
+  incoming_borrow_requests: async (body) =>
+    client.query(api.publicAgent.getIncomingBorrowRequests, {
+      channel: "telegram",
+      providerUserId: body.providerUserId as string,
+    }),
+  approve_borrow: async (body) =>
+    client.mutation(api.publicAgent.approveBorrow, {
+      channel: "telegram",
+      providerUserId: body.providerUserId as string,
+      idempotencyKey: body.idempotencyKey as string,
+      requestId: body.requestId as any,
+    }),
+  reject_borrow: async (body) =>
+    client.mutation(api.publicAgent.rejectBorrow, {
+      channel: "telegram",
+      providerUserId: body.providerUserId as string,
+      idempotencyKey: body.idempotencyKey as string,
+      requestId: body.requestId as any,
+      rejectionReason: body.rejectionReason as string | undefined,
+    }),
+  return_book: async (body) =>
+    client.mutation(api.publicAgent.returnBook, {
+      channel: "telegram",
+      providerUserId: body.providerUserId as string,
+      idempotencyKey: body.idempotencyKey as string,
+      transactionId: body.transactionId as any,
     }),
 };
 

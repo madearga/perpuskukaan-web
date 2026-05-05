@@ -54,6 +54,63 @@ Action: {"action":"borrow_draft","providerUserId":"<telegram-id>","idempotencyKe
 Agent: Request pinjam "Laskar Pelangi" selama 14 hari udah dikirim! Tinggal tunggu pemilik bukunya approve ya. 🤞
 ```
 
+## My Borrows
+
+```
+User: /pinjaman
+Agent: Cek dulu ya pinjaman kamu...
+Action: {"action":"my_borrows","providerUserId":"<telegram-id>"}
+Agent: Ini daftar pinjaman kamu:
+📋 Request:
+  1. "Laskar Pelangi" — Menunggu persetujuan
+📋 Aktif:
+  (tidak ada pinjaman aktif)
+```
+
+## Incoming Borrow Requests
+
+```
+User: /permintaan
+Agent: Cek permintaan pinjam ke kamu...
+Action: {"action":"incoming_borrow_requests","providerUserId":"<telegram-id>"}
+Agent: Ada permintaan nih:
+1. 📖 "Sapiens" — Diminta oleh Budi (14 hari) — Menunggu
+Mau disetujuin atau ditolak? Balas /setuju atau /tolak.
+```
+
+## Approve Borrow
+
+```
+User: /setuju
+Agent: Mau setujuin permintaan yang mana? Kirim nomor permintaannya ya.
+User: 1
+Action: {"action":"approve_borrow","providerUserId":"<telegram-id>","idempotencyKey":"telegram:<msgId>:approve_borrow","requestId":"<request-id>"}
+Agent: Sudah disetujui! Buku "Sapiens" sekarang dipinjamkan ke Budi selama 14 hari. 🎉
+```
+
+## Reject Borrow
+
+```
+User: /tolak
+Agent: Mau tolak permintaan yang mana? Kirim nomor permintaannya ya.
+User: 1
+Agent: Ada alasan tertentu?
+User: lagi dipakai sendiri
+Action: {"action":"reject_borrow","providerUserId":"<telegram-id>","idempotencyKey":"telegram:<msgId>:reject_borrow","requestId":"<request-id>","rejectionReason":"lagi dipakai sendiri"}
+Agent: Permintaan pinjam "Sapiens" udah ditolak. Pemohonnya nanti dikasih tau. 🙏
+```
+
+## Return Book
+
+```
+User: /kembali
+Agent: Mau kembalikan buku yang mana? Ini pinjaman aktif kamu:
+1. "Laskar Pelangi" — Dipinjam 5 Mei
+User: 1
+Action: {"action":"return_book","providerUserId":"<telegram-id>","idempotencyKey":"telegram:<msgId>:return_book","transactionId":"<transaction-id>"}
+Agent: Buku "Laskar Pelangi" sudah dikembalikan! Terima kasih ya. 📚
+```
+
 ## Out of Scope (Rejection)
 
 ```

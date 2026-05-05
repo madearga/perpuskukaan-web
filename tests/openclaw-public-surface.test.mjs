@@ -20,6 +20,11 @@ test("public agent route requires local shared secret and allowlisted actions", 
   assert.match(source, /register/);
   assert.match(source, /add_book_draft/);
   assert.match(source, /borrow_draft/);
+  assert.match(source, /my_borrows/);
+  assert.match(source, /incoming_borrow_requests/);
+  assert.match(source, /approve_borrow/);
+  assert.match(source, /reject_borrow/);
+  assert.match(source, /return_book/);
 
   // Must NOT contain any shell execution primitives
   assert.doesNotMatch(source, /eval\s*\(/);
@@ -38,6 +43,11 @@ test("public agent route forwards to Convex publicAgent functions", () => {
   assert.match(source, /getMyBooks/);
   assert.match(source, /createBookDraft/);
   assert.match(source, /createBorrowDraft/);
+  assert.match(source, /getMyBorrows/);
+  assert.match(source, /getIncomingBorrowRequests/);
+  assert.match(source, /approveBorrow/);
+  assert.match(source, /rejectBorrow/);
+  assert.match(source, /returnBook/);
 });
 
 test("public agent route rejects invalid or missing actions with 400", () => {
@@ -71,6 +81,11 @@ test("OpenClaw public prompt forbids raw admin command leakage", () => {
   assert.match(prompt, /my_books/);
   assert.match(prompt, /add_book_draft/);
   assert.match(prompt, /borrow_draft/);
+  assert.match(prompt, /my_borrows/);
+  assert.match(prompt, /incoming_borrow_requests/);
+  assert.match(prompt, /approve_borrow/);
+  assert.match(prompt, /reject_borrow/);
+  assert.match(prompt, /return_book/);
 
   // Must require Indonesian replies
   assert.match(prompt, /balas dalam Bahasa Indonesia/i);
@@ -85,12 +100,17 @@ test("OpenClaw public prompt requires idempotency keys for write actions", () =>
 test("OpenClaw few-shot examples cover core public actions", () => {
   const examples = read("ops/openclaw/public/examples.md");
 
-  // Must include examples for search, my_books, add_book_draft, borrow_draft, and register
+  // Must include examples for all public actions
   assert.match(examples, /search_books/);
   assert.match(examples, /my_books/);
   assert.match(examples, /add_book_draft/);
   assert.match(examples, /borrow_draft/);
   assert.match(examples, /register/);
+  assert.match(examples, /my_borrows/);
+  assert.match(examples, /incoming_borrow_requests/);
+  assert.match(examples, /approve_borrow/);
+  assert.match(examples, /reject_borrow/);
+  assert.match(examples, /return_book/);
 });
 
 test("OpenClaw enable script stops poller and starts openclaw", () => {
