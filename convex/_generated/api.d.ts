@@ -24,6 +24,7 @@ import type * as emails_verifyEmail from "../emails/verifyEmail.js";
 import type * as emails_verifyOTP from "../emails/verifyOTP.js";
 import type * as http from "../http.js";
 import type * as publicAgent from "../publicAgent.js";
+import type * as publicAgentQueries from "../publicAgentQueries.js";
 import type * as transactions from "../transactions.js";
 import type * as users from "../users.js";
 import type * as util from "../util.js";
@@ -52,6 +53,7 @@ declare const fullApi: ApiFromModules<{
   "emails/verifyOTP": typeof emails_verifyOTP;
   http: typeof http;
   publicAgent: typeof publicAgent;
+  publicAgentQueries: typeof publicAgentQueries;
   transactions: typeof transactions;
   users: typeof users;
   util: typeof util;
