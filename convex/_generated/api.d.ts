@@ -8,6 +8,8 @@
  * @module
  */
 
+import type * as agentActions from "../agentActions.js";
+import type * as agentBooks from "../agentBooks.js";
 import type * as auth from "../auth.js";
 import type * as books from "../books.js";
 import type * as borrowRequests from "../borrowRequests.js";
@@ -33,6 +35,8 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  agentActions: typeof agentActions;
+  agentBooks: typeof agentBooks;
   auth: typeof auth;
   books: typeof books;
   borrowRequests: typeof borrowRequests;
