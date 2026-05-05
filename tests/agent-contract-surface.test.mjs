@@ -59,6 +59,7 @@ test("web Telegram linking creates Bot Layer channel identity", () => {
   assert.match(source, /userIdentities/);
   assert.match(source, /provider:\s*"telegram"/);
   assert.match(source, /providerUserId:\s*args\.telegramId/);
+  assert.match(source, /if \(existing && existing\._id === args\.webUserId\) \{\n\s+await upsertTelegramIdentity/);
 });
 
 test("agent identity model supports WhatsApp migration", () => {

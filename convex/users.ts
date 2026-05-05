@@ -201,8 +201,14 @@ export const connectTelegram = mutation({
       throw new Error("Telegram account already linked to another user");
     }
 
-    // If already linked to this user, idempotent success
+    // If already linked to this user, idempotently ensure Bot Layer identity exists too.
     if (existing && existing._id === args.webUserId) {
+      await upsertTelegramIdentity(ctx, {
+        userId: args.webUserId,
+        telegramId: args.telegramId,
+        username: args.username,
+        firstName: args.firstName,
+      });
       return { success: true, merged: false };
     }
 
